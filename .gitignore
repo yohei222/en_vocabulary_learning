@@ -1,0 +1,36 @@
+### backend
+
+# Ignore bundler config.
+backend/.bundle
+
+# Ignore all logfiles and tempfiles.
+backend/log/*
+backend/tmp/*
+backend!/log/.keep
+backend!/tmp/.keep
+
+# Ignore pidfiles, but keep the directory.
+backend/tmp/pids/*
+backend!/tmp/pids/
+backend!/tmp/pids/.keep
+
+# Ignore uploaded files in development.
+backend/storage/*
+backend!/storage/.keep
+backend.byebug_history
+
+# Ignore master key for decrypting credentials and more.
+backend/config/master.key
+
+### frontend
+
+# dependencies
+frontend/node_modules
+frontend/.pnp
+frontend.pnp.js
+
+# testing
+frontend/coverage
+
+# production
+frontend/build
