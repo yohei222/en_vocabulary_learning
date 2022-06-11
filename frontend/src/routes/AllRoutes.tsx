@@ -16,6 +16,7 @@ const AllRoutes = (): JSX.Element => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  // todo useCallbackに変更する？
   const handleGetCurrentUser = async () => {
     try {
       const res = await getCurrentUser();
@@ -38,9 +39,7 @@ const AllRoutes = (): JSX.Element => {
     setIsLoading(false);
   }
 
-  useEffect(() => {
-    handleGetCurrentUser();
-  }, [])
+  handleGetCurrentUser();
 
   return (
     <Routes>
