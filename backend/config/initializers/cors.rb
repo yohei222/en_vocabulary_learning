@@ -7,11 +7,18 @@
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins 'localhost:3001', 'https://62a4a8a8e480b7000834da8d--en-vocabulary-learning.netlify.app/'
+    origins = case Rails.env
+              when 'development', 'test'
+                ['http://localhost:3001']
+              when 'production'
+                ['https://62a4a8a8e480b7000834da8d--en-vocabulary-learning.netlify.app']
+              end
+    origins(origins)
 
     resource '*',
       headers: :any,
-      expose: ["access-token", "expiry", "token-type", "uid", "client"],
-      methods: [:get, :post, :put, :patch, :delete, :options, :head]
+      expose: ["access-token", "uid", "client"],
+      methods: [:get, :post, :put, :patch, :delete, :options, :head],
+      credentials: true
   end
 end
