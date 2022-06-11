@@ -8,6 +8,8 @@ import { useNavigate } from "react-router-dom";
 import { SignUpParams } from "type";
 import setCookies from "utilities/cookies/setCookies";
 import { jaTranslate } from "locales/i18n"
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from "yup";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -28,11 +30,17 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
+const schema = yup.object({
+  nickname: yup.string().required(),
+}).required();
+
 const SignUp = (): JSX.Element => {
   const classes = useStyles();
   const navigate = useNavigate();
   const { setIsSignedIn, setCurrentUser } = useContext(AuthContext)
-  const { register, handleSubmit, formState: { errors } } = useForm<SignUpParams>();
+  const { register, handleSubmit, formState: { errors } } = useForm<SignUpParams>({
+    resolver: yupResolver(schema)
+  });
 
   console.log(errors);
 
@@ -68,7 +76,7 @@ const SignUp = (): JSX.Element => {
             className={classes.form}
             {...register("nickname", { required: true, minLength: 2, maxLength: 10 })}
           />
-          {errors.nickname && <span>{ errors.nickname.type }</span>}
+          {errors.nickname?.message}
         </div>
 
         <div className={classes.form}>
