@@ -11,7 +11,7 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
               when 'development', 'test'
                 ['http://localhost:3001']
               when 'production'
-                ['https://62a4a8a8e480b7000834da8d--en-vocabulary-learning.netlify.app']
+                ['https://en-vocabulary-learning.netlify.app']
               end
     origins(origins)
 
