@@ -5,9 +5,14 @@ const options = {
   ignoreHeaders: true,
 };
 
+const baseUrl =
+  process.env.NODE_ENV === "production"
+    ? process.env.REACT_APP_API_PRODUCTION_ENDPOINT
+    : process.env.REACT_APP_API_LOCAL_ENDPOINT;
+
 const client = applyCaseMiddleware(
   axios.create({
-    baseURL: process.env.REACT_APP_API_ENDPOINT,
+    baseURL: baseUrl,
   }),
   options
 );

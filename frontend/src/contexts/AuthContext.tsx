@@ -1,4 +1,5 @@
-import { createContext, useState } from 'react';
+import { getCurrentUser } from "lib/api/auth";
+import { createContext, useCallback, useState } from 'react';
 import { User } from 'type';
 
 type ContextType = {
