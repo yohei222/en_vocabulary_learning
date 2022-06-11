@@ -8,7 +8,6 @@ export const signUp = async (params: SignUpParams) => {
 }
 
 export const signIn = (params: SignInParams)  => {
-  // ↓こっちにする！
   return postRequest(API_PATH.AUTH.SIGN_IN, params);
 }
 
