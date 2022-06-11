@@ -7,11 +7,13 @@ import PATH from 'path/FRONTEND_PATH';
 import { useContext, useEffect } from "react";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 
 const AUTH_RELATED_PATH = [PATH.SIGN_IN, PATH.SIGN_UP]
 
 const AllRoutes = (): JSX.Element => {
-  const { setIsLoading, setIsSignedIn, setCurrentUser } = useContext(AuthContext);
+  const { isLoading, setIsLoading, setIsSignedIn, setCurrentUser } = useContext(AuthContext);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -43,11 +45,17 @@ const AllRoutes = (): JSX.Element => {
   }, [])
 
   return (
-    <Routes>
-      <Route path={ PATH.SIGN_UP } element={<SignUp />} />
-      <Route path={ PATH.SIGN_IN } element={<SignIn />} />
-      <Route path="/home" element={<PrivateRoute children={<Home />} />} />
-    </Routes>
+    isLoading ? (
+      <Box sx={{ display: 'flex' }}>
+        <CircularProgress />
+      </Box>
+    ) : (
+      <Routes>
+        <Route path={ PATH.SIGN_UP } element={<SignUp />} />
+        <Route path={ PATH.SIGN_IN } element={<SignIn />} />
+        <Route path="/home" element={<PrivateRoute children={<Home />} />} />
+      </Routes>
+    )
   )
 }
 

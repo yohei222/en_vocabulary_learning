@@ -14,7 +14,6 @@ import { SignInParams } from "type";
 import setCookies from "utilities/cookies/setCookies";
 import * as yup from "yup";
 
-
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
