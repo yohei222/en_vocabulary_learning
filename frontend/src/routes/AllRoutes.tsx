@@ -30,8 +30,7 @@ const AllRoutes = (): JSX.Element => {
         navigate((path === PATH.SIGN_IN) ? PATH.SIGN_IN : PATH.SIGN_UP);
       }
     } catch (err) {
-      // todo エラー時の実装
-      console.log(err);
+      navigate("/home");
     }
 
     setIsLoading(false);
