@@ -8,8 +8,10 @@ import { useContext, useEffect } from "react";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
 
+const AUTH_RELATED_PATH = [PATH.SIGN_IN, PATH.SIGN_UP]
+
 const AllRoutes = (): JSX.Element => {
-  const { setIsLoading, isSignedIn, setIsSignedIn, setCurrentUser } = useContext(AuthContext);
+  const { setIsLoading, setIsSignedIn, setCurrentUser } = useContext(AuthContext);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -23,15 +25,14 @@ const AllRoutes = (): JSX.Element => {
         setIsSignedIn(true);
         setCurrentUser(res?.data.data);
 
-        if (isSignedIn && ((path === (PATH.SIGN_IN || PATH.SIGN_UP)))) {
+        if (AUTH_RELATED_PATH.includes(path)) {
           navigate("/home");
         }
       } else {
         navigate((path === PATH.SIGN_IN) ? PATH.SIGN_IN : PATH.SIGN_UP);
       }
     } catch (err) {
-      // todo エラー時の実装
-      console.log(err);
+      navigate("/home");
     }
 
     setIsLoading(false);
@@ -43,8 +44,8 @@ const AllRoutes = (): JSX.Element => {
 
   return (
     <Routes>
-      <Route path={ PATH.SIGN_UP } element={<SignUp />} />
-      <Route path={ PATH.SIGN_IN } element={<SignIn />} />
+      <Route path={PATH.SIGN_UP} element={<SignUp />} />
+      <Route path={PATH.SIGN_IN} element={<SignIn />} />
       <Route path="/home" element={<PrivateRoute children={<Home />} />} />
     </Routes>
   )

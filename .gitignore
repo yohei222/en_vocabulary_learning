@@ -36,3 +36,6 @@ frontend/coverage
 
 # production
 frontend/build
+
+# error
+frontend/yarn-error.log

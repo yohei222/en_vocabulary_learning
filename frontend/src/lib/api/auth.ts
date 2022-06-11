@@ -1,14 +1,15 @@
-import client from "lib/api/client"
+import client, { postRequest } from "lib/api/client"
 import { SignUpParams, SignInParams } from "type";
 import API_PATH from "path/API_PATH";
 import getCookies from "utilities/cookies/getCookies";
 
-export const signUp = (params: SignUpParams) => {
-  return client.post(API_PATH.AUTH.SIGN_UP, params);
+export const signUp = async (params: SignUpParams) => {
+  return postRequest(API_PATH.AUTH.SIGN_UP, params);
 }
 
 export const signIn = (params: SignInParams)  => {
-  return client.post(API_PATH.AUTH.SIGN_IN, params);
+  // ↓こっちにする！
+  return postRequest(API_PATH.AUTH.SIGN_IN, params);
 }
 
 export const signOut = () => {
