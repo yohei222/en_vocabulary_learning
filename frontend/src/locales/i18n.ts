@@ -18,8 +18,12 @@ i18n.use(initReactI18next).init({
   },
 });
 
-export const jaTranslate = (key: string): string => {
-  return i18n.t(key) as string;
-}
+export const jaTranslate = (key: string, object?: string): string => {
+  if (object) {
+    return i18n.t(key, { object: i18n.t(object) }) as string;
+  } else {
+    return i18n.t(key) as string;
+  }
+};
 
 export default i18n;
