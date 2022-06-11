@@ -4,7 +4,7 @@ import SignUp from "components/SignUp";
 import { AuthContext } from "contexts/AuthContext";
 import { getCurrentUser } from "lib/api/auth";
 import PATH from 'path/FRONTEND_PATH';
-import { useContext, useEffect } from "react";
+import { useCallback, useContext } from "react";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
 
@@ -16,8 +16,7 @@ const AllRoutes = (): JSX.Element => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // todo useCallbackに変更する？
-  const handleGetCurrentUser = async () => {
+  const handleGetCurrentUser = useCallback(async () => {
     try {
       const res = await getCurrentUser();
       const path = location.pathname;
@@ -37,7 +36,8 @@ const AllRoutes = (): JSX.Element => {
     }
 
     setIsLoading(false);
-  }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   handleGetCurrentUser();
 
