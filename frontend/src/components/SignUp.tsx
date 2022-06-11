@@ -4,10 +4,10 @@ import { AuthContext } from "contexts/AuthContext";
 import { signUp } from "lib/api/auth";
 import React, { useContext } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useTranslation } from 'react-i18next';
 import { useNavigate } from "react-router-dom";
 import { SignUpParams } from "type";
 import setCookies from "utilities/cookies/setCookies";
+import { jaTranslate } from "locales/i18n"
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -28,12 +28,11 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-
 const SignUp = (): JSX.Element => {
   const classes = useStyles();
   const navigate = useNavigate();
   const { setIsSignedIn, setCurrentUser } = useContext(AuthContext)
-  const { register, handleSubmit, watch, formState: { errors } } = useForm<SignUpParams>();
+  const { register, handleSubmit, formState: { errors } } = useForm<SignUpParams>();
 
   console.log(errors);
 
@@ -65,7 +64,7 @@ const SignUp = (): JSX.Element => {
         <div className={classes.form}>
           <TextField
             fullWidth
-            label="ニックネーム"
+            label={jaTranslate('model.user.nickname')}
             className={classes.form}
             {...register("nickname", { required: true, minLength: 2, maxLength: 10 })}
           />
@@ -75,7 +74,7 @@ const SignUp = (): JSX.Element => {
         <div className={classes.form}>
           <TextField
             fullWidth
-            label="Eメール"
+            label={jaTranslate('model.user.email')}
             className={classes.form}
             {...register("email", { required: true, minLength: 2, maxLength: 30 })}
           />
@@ -83,21 +82,20 @@ const SignUp = (): JSX.Element => {
         <div className={classes.form}>
           <TextField
             fullWidth
-            label="パスワード"
+            label={jaTranslate('model.user.password')}
             type="password"
             autoComplete="current-password"
             {...register("password", { required: true, minLength: 6, maxLength: 20 })}
           />
         </div>
 
-        {/* <input type="submit" /> */}
         <Button
           variant="contained"
           color="success"
           size="large"
           className={classes.button}
           type="submit">
-          送信
+          {jaTranslate('actions.submit')}
         </Button>
       </form>
 
@@ -107,7 +105,7 @@ const SignUp = (): JSX.Element => {
         size="large"
         className={classes.button}
         onClick={() => navigate('/sign_in')}>
-        ログイン
+        {jaTranslate('actions.login')}
       </Button>
     </Container>
   )

@@ -7,7 +7,7 @@ const PrivateRoute = ({ children }: { children: React.ReactElement }) => {
   const { isLoading, isSignedIn } = useContext(AuthContext);
 
   if (!isLoading) {
-    return isSignedIn ? children : <Navigate to={ PATH.SIGN_IN} />;
+    return isSignedIn ? children : <Navigate to={ PATH.SIGN_IN } />;
   } else {
     // todo isLoadingモーダルのコンポーネントを作成する？ material uiを使用する？
     return <></>;
