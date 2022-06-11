@@ -49,9 +49,9 @@ Rails.application.configure do
   # Use a different cache store in production.
   # config.cache_store = :mem_cache_store
 
-  # Use a real queuing spa_login_practice for Active Job (and separate queues per environment).
+  # Use a real queuing en_vocabulary_learning for Active Job (and separate queues per environment).
   # config.active_job.queue_adapter     = :resque
-  # config.active_job.queue_name_prefix = "spa_login_practice_production"
+  # config.active_job.queue_name_prefix = "en_vocabulary_learning_production"
 
   config.action_mailer.perform_caching = false
 
