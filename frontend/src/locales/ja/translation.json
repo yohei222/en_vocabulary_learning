@@ -1,0 +1,17 @@
+{
+  "model": {
+    "user": {
+      "email": "Emailアドレス",
+      "password": "パスワード",
+      "nickname": "ニックネーム"
+    }
+  },
+  "crud": {
+    "create": "{{object}}を新規作成",
+    "update": "{{object}}を編集"
+  },
+  "actions": {
+    "submit": "送信",
+    "login": "ログイン"
+  }
+}
