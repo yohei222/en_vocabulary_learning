@@ -27,6 +27,7 @@ export const getCurrentUser = () => {
   const { accessToken, cookieClient, uid } = getCookies();
 
   if (!accessToken || !client || !uid) return
+  
   return client.get(API_PATH.AUTH.SESSIONS, {
     headers: {
       "access-token": accessToken as string,
