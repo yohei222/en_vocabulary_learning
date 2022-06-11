@@ -77,6 +77,7 @@ const SignUp = (): JSX.Element => {
 
   return (
     <Container maxWidth="sm" className={classes.root}>
+      <h1>{jaTranslate('actions.signUp')}</h1>
       <form onSubmit={handleSubmit(onSubmit)} className={classes.formWrapper}>
         <div className={classes.form}>
           <TextField
@@ -136,7 +137,7 @@ const SignUp = (): JSX.Element => {
         size="large"
         className={classes.button}
         onClick={() => navigate('/sign_in')}>
-        {jaTranslate('actions.login')}
+        {jaTranslate('actions.signIn')}
       </Button>
     </Container>
   )

@@ -76,6 +76,7 @@ const SignIn = (): JSX.Element => {
 
   return (
     <Container maxWidth = "sm" className = { classes.root } >
+      <h1>{jaTranslate('actions.signIn')}</h1>
       <form onSubmit={handleSubmit(onSubmit)} className={classes.formWrapper}>
         <div className={classes.form}>
           <TextField
