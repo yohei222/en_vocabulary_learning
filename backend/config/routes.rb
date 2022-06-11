@@ -5,5 +5,7 @@ Rails.application.routes.draw do
     namespace :auth do
       resources :sessions, only: %i[index]
     end
+
+    resources :vocabularies, only: %i[index create update destroy]
   end
 end
