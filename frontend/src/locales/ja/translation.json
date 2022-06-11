@@ -1,0 +1,29 @@
+{
+  "model": {
+    "user": {
+      "email": "Emailアドレス",
+      "password": "パスワード",
+      "nickname": "ニックネーム"
+    }
+  },
+  "crud": {
+    "create": "{{object}}を新規作成",
+    "update": "{{object}}を編集"
+  },
+  "actions": {
+    "submit": "送信",
+    "signIn": "ログイン",
+    "signUp": "サインアップ"
+  },
+  "errors": {
+    "required": "{{object}}は必須項目です"
+  },
+  "success": {
+    "action": "{{object}}に成功しました",
+    "create": "{{object}}の作成に成功しました"
+  },
+  "failure": {
+    "action": "{{object}}に失敗しました",
+    "create": "{{object}}の作成に失敗しました"
+  }
+}

@@ -1,13 +1,17 @@
+import { yupResolver } from '@hookform/resolvers/yup';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { Button, Container, TextField } from '@mui/material';
+import Color from 'Color';
 import { AuthContext } from "contexts/AuthContext";
 import { signUp } from "lib/api/auth";
+import { jaTranslate } from "locales/i18n";
 import React, { useContext } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useTranslation } from 'react-i18next';
 import { useNavigate } from "react-router-dom";
 import { SignUpParams } from "type";
+import * as yup from "yup";
 import setCookies from "utilities/cookies/setCookies";
+import { toast } from 'react-toastify';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -24,80 +28,106 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     button: {
       width: '100%',
+    },
+    errorMessage: {
+      color: Color.red,
+      marginLeft: '5px',
+      fontWeight: 'bolder',
     }
   })
 );
 
+const schema = yup.object({
+  nickname: yup.string().required(
+    jaTranslate('errors.required', 'model.user.nickname')
+  ),
+  email: yup.string().min(6).required(
+    jaTranslate('errors.required', 'model.user.email')
+  ),
+  password: yup.string().min(6).required(
+    jaTranslate('errors.required', 'model.user.password')
+  ),
+}).required();
 
 const SignUp = (): JSX.Element => {
   const classes = useStyles();
   const navigate = useNavigate();
   const { setIsSignedIn, setCurrentUser } = useContext(AuthContext)
-  const { register, handleSubmit, watch, formState: { errors } } = useForm<SignUpParams>();
+  const notifySignUpSuccess = () => toast(jaTranslate('success.action', 'actions.signUp'));
+  const notifySignUpFailure = () => toast(jaTranslate('failure.action', 'actions.signUp'));
 
-  console.log(errors);
+  const { register, handleSubmit, formState: { errors } } = useForm<SignUpParams>({
+    resolver: yupResolver(schema)
+  });
 
   const onSubmit: SubmitHandler<SignUpParams> = async (data: SignUpParams) => {
-    const res = await signUp(data);
+    const { headers, responseData, status } = await signUp(data);
 
-    if (res.status === 200) {
-      setCookies(res);
+    if ((status === 200) && headers) {
+      setCurrentUser(responseData);
       setIsSignedIn(true);
-      setCurrentUser(res.data.data);
+      setCookies(headers);
 
       navigate("/home");
-
-      console.log("Signed in successfully!");
+      notifySignUpSuccess();
     } else {
-      console.log("失敗!");
+      notifySignUpFailure();
     }
   };
 
-  // todo now validation messageの表示
-  // githubソースコードをpushする！
-  // エラーメッセージを日本語で表示するところから！
-  // ログイン機能が良い感じに実装できたら、githubにpushする
-  // →それをforkして、他の機能を実装していく、もしくはこのまま名前を変えて実装を続ける！
-
   return (
     <Container maxWidth="sm" className={classes.root}>
+      <h1>{jaTranslate('actions.signUp')}</h1>
       <form onSubmit={handleSubmit(onSubmit)} className={classes.formWrapper}>
         <div className={classes.form}>
           <TextField
             fullWidth
-            label="ニックネーム"
+            label={jaTranslate('model.user.nickname')}
             className={classes.form}
             {...register("nickname", { required: true, minLength: 2, maxLength: 10 })}
           />
-          {errors.nickname && <span>{ errors.nickname.type }</span>}
+          { errors.nickname && (
+            <span className={classes.errorMessage} color="danger">
+              * {errors.nickname.message}
+            </span>
+          )}
         </div>
 
         <div className={classes.form}>
           <TextField
             fullWidth
-            label="Eメール"
+            label={jaTranslate('model.user.email')}
             className={classes.form}
             {...register("email", { required: true, minLength: 2, maxLength: 30 })}
           />
+          {errors.email && (
+            <span className={classes.errorMessage} color="danger">
+              * {errors.email.message}
+            </span>
+          )}
         </div>
         <div className={classes.form}>
           <TextField
             fullWidth
-            label="パスワード"
+            label={jaTranslate('model.user.password')}
             type="password"
             autoComplete="current-password"
             {...register("password", { required: true, minLength: 6, maxLength: 20 })}
           />
+          {errors.password && (
+            <span className={classes.errorMessage} color="danger">
+              * {errors.password.message}
+            </span>
+          )}
         </div>
 
-        {/* <input type="submit" /> */}
         <Button
           variant="contained"
           color="success"
           size="large"
           className={classes.button}
           type="submit">
-          送信
+          {jaTranslate('actions.submit')}
         </Button>
       </form>
 
@@ -107,7 +137,7 @@ const SignUp = (): JSX.Element => {
         size="large"
         className={classes.button}
         onClick={() => navigate('/sign_in')}>
-        ログイン
+        {jaTranslate('actions.signIn')}
       </Button>
     </Container>
   )
