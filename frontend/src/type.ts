@@ -1,3 +1,5 @@
+// todo paramsとmodelのtypeで別ファイルに分ける？
+
 export type SignUpParams = {
   nickname: string;
   email: string;
@@ -15,6 +17,35 @@ export type User = {
   provider: string;
   email: string;
   nickname: string;
-  created_at: Date;
-  updated_at: Date;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type Vocabulary = {
+  id: number;
+  userId: string;
+  vocabularyEn: string;
+  meaningJa: string;
+  vocabularyDetail: VocabularyDetail;
+  vocabularyUsages: VocabularyUsage[];
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type VocabularyDetail = {
+  id: number;
+  vocabularyId: string;
+  comprehensionRate: string;
+  memo: string;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type VocabularyUsage = {
+  id: number;
+  vocabularyId: string;
+  definition: string;
+  example: string;
+  createdAt: Date;
+  updatedAt: Date;
 };

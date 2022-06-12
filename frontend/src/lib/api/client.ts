@@ -1,5 +1,6 @@
 import applyCaseMiddleware from "axios-case-converter";
 import axios from "axios";
+import { tokenAuthHeaders } from "./auth";
 
 const options = {
   ignoreHeaders: true,
@@ -23,6 +24,30 @@ export const postRequest = async (path: string, params: any) => {
     return { headers: response.headers, responseData: response.data.data, status: response.status };
   } catch (error: any) {
     return { headers: undefined, responseData: undefined, status: error.response?.status };
+  }
+}
+
+// todo 動作確認、paramsの設定方法は合っている？
+export const getRequest = async (path: string, params?: any) => {
+
+  try {
+    const response = await client.get(path,
+      Object.assign({
+        headers: tokenAuthHeaders(),
+        ignoreHeaders: true,
+      }, params));
+
+    return {
+      headers: response.headers,
+      responseData: response.data,
+      status: response.status,
+    };
+  } catch (error: any) {
+    return {
+      headers: undefined,
+      responseData: undefined,
+      status: error.response?.status,
+    };
   }
 }
 

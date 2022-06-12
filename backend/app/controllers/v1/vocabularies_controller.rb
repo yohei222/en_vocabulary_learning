@@ -10,6 +10,8 @@ class V1::VocabulariesController < ApplicationController
   end
 
   def create
+    # transaction 管理をする、service層やfactoryを使う
+    # api連携したコードは他の箇所に書く？
     # todo Reactの一覧画面の表示ができてから実装する
   end
 

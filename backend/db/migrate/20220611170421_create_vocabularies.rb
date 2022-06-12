@@ -7,5 +7,8 @@ class CreateVocabularies < ActiveRecord::Migration[6.0]
 
       t.timestamps
     end
+
+    add_index :vocabularies, :vocabulary_en
+    add_index :vocabularies, [:user_id, :vocabulary_en], unique: true
   end
 end

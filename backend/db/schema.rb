@@ -31,7 +31,9 @@ ActiveRecord::Schema.define(version: 2022_06_11_172030) do
     t.string "meaning_ja", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id", "vocabulary_en"], name: "index_vocabularies_on_user_id_and_vocabulary_en", unique: true
     t.index ["user_id"], name: "index_vocabularies_on_user_id"
+    t.index ["vocabulary_en"], name: "index_vocabularies_on_vocabulary_en"
   end
 
   create_table "vocabulary_details", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
