@@ -4,8 +4,6 @@ class CreateVocabularyDetails < ActiveRecord::Migration[6.0]
       t.references :vocabulary, foreign_key: true
       t.integer :comprehension_rate, null: false, default: 0
       t.string :memo, default: ''
-
-      t.timestamps
     end
   end
 end

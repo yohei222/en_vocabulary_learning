@@ -12,7 +12,7 @@
 
 ActiveRecord::Schema.define(version: 2022_06_11_172030) do
 
-  create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "provider", default: "email", null: false
     t.string "uid", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -25,7 +25,7 @@ ActiveRecord::Schema.define(version: 2022_06_11_172030) do
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
   end
 
-  create_table "vocabularies", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "vocabularies", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.bigint "user_id"
     t.string "vocabulary_en", null: false
     t.string "meaning_ja", null: false
@@ -36,21 +36,17 @@ ActiveRecord::Schema.define(version: 2022_06_11_172030) do
     t.index ["vocabulary_en"], name: "index_vocabularies_on_vocabulary_en"
   end
 
-  create_table "vocabulary_details", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "vocabulary_details", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.bigint "vocabulary_id"
     t.integer "comprehension_rate", default: 0, null: false
     t.string "memo", default: ""
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
     t.index ["vocabulary_id"], name: "index_vocabulary_details_on_vocabulary_id"
   end
 
-  create_table "vocabulary_usages", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "vocabulary_usages", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.bigint "vocabulary_id"
     t.string "definition", null: false
-    t.string "example", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.string "examples", default: ""
     t.index ["vocabulary_id"], name: "index_vocabulary_usages_on_vocabulary_id"
   end
 

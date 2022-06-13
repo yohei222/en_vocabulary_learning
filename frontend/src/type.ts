@@ -45,7 +45,7 @@ export type VocabularyUsage = {
   id: number;
   vocabularyId: string;
   definition: string;
-  example: string;
+  examples: string;
   createdAt: Date;
   updatedAt: Date;
 };

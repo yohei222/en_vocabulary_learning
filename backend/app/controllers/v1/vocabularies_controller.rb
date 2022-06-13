@@ -10,9 +10,11 @@ class V1::VocabulariesController < ApplicationController
   end
 
   def create
-    # transaction 管理をする、service層やfactoryを使う
-    # api連携したコードは他の箇所に書く？
-    # todo Reactの一覧画面の表示ができてから実装する
+    vocabulary = ::VocabularyService.create!(current_v1_user, create_params)
+
+    render status: :ok, json: vocabulary, serializer: ::VocabularySerializer
+  rescue => e
+    render status: :bad_request, json: { message: "Bad Request" }
   end
 
   private
@@ -21,8 +23,7 @@ class V1::VocabulariesController < ApplicationController
     params.permit(
       :vocabulary_en,
       :meaning_ja,
-      vocabulary_detail: [:comprehension_rate, :memo],
-      vocabulary_usages: [:definition, :example]
+      vocabulary_detail: [:comprehension_rate, :memo]
     )
   end
 end

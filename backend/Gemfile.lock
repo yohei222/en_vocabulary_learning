@@ -81,7 +81,15 @@ GEM
       bcrypt (~> 3.0)
       devise (> 3.5.2, < 5)
       rails (>= 4.2.0, < 6.2)
+    dotenv (2.7.6)
+    dotenv-rails (2.7.6)
+      dotenv (= 2.7.6)
+      railties (>= 3.2)
     erubi (1.10.0)
+    faraday (2.3.0)
+      faraday-net_http (~> 2.0)
+      ruby2_keywords (>= 0.0.4)
+    faraday-net_http (2.0.3)
     ffi (1.15.5)
     globalid (1.0.0)
       activesupport (>= 5.0)
@@ -154,6 +162,7 @@ GEM
     responders (3.0.1)
       actionpack (>= 5.0)
       railties (>= 5.0)
+    ruby2_keywords (0.0.5)
     spring (2.1.1)
     spring-watcher-listen (2.0.1)
       listen (>= 2.7, < 4.0)
@@ -185,6 +194,8 @@ DEPENDENCIES
   byebug
   devise
   devise_token_auth
+  dotenv-rails
+  faraday (~> 2.3)
   listen (~> 3.2)
   mysql2 (>= 0.4.4)
   pry-rails

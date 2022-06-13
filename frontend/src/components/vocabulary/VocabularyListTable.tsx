@@ -146,9 +146,16 @@ const VocabularyListTable = (): JSX.Element => {
                       <h3 id="parent-modal-title">definition{i+1}</h3>
                       <span className={classes.span}>{usage.definition}</span>
                       <br />
-                      <p id="parent-modal-description">
-                        <span className={ classes.span }>example:</span> {usage.example}
-                      </p>
+
+                      {(usage.examples) && (
+                        (usage.examples.split(", ")).map((example: string, j: number) => {
+                          return (
+                            <p id="parent-modal-description">
+                              <span className={classes.span}>example{j + 1}:</span> {example}
+                            </p>
+                          )
+                        })
+                      )}
                     </>
                   )
                 })

@@ -21,6 +21,7 @@ const VocabulariesIndex = (): JSX.Element => {
   return (
     <VocabularyContext.Provider value={ctx}>
       <div className={classes.root}>
+        {/* todo apiの実装→create button→modalの実装 */}
         <VocabularyAddButton />
         <VocabularyListTable />
       </div>
