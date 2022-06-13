@@ -3,16 +3,15 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { Button, Container, TextField } from '@mui/material';
 import Color from 'Color';
 import { AuthContext } from "contexts/AuthContext";
-import { signIn } from "lib/api/auth";
+import { signUp } from "lib/api/auth";
 import { jaTranslate } from "locales/i18n";
 import React, { useContext } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { SignInParams } from "type";
-import setCookies from "utilities/cookies/setCookies";
+import { SignUpParams } from "type";
 import * as yup from "yup";
+import setCookies from "utilities/cookies/setCookies";
+import { toast } from 'react-toastify';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -39,6 +38,9 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const schema = yup.object({
+  nickname: yup.string().required(
+    jaTranslate('errors.required', 'model.user.nickname')
+  ),
   email: yup.string().min(6).required(
     jaTranslate('errors.required', 'model.user.email')
   ),
@@ -47,36 +49,50 @@ const schema = yup.object({
   ),
 }).required();
 
-const SignIn = (): JSX.Element => {
+const SignUp = (): JSX.Element => {
   const classes = useStyles();
   const navigate = useNavigate();
-  const { setIsSignedIn, setCurrentUser } = useContext(AuthContext);
-  const notifySignInSuccess = () => toast(jaTranslate('success.action', 'actions.signIn'));
-  const notifySignInFailure = () => toast(jaTranslate('failure.action', 'actions.signIn'));
+  const { setIsSignedIn, setCurrentUser } = useContext(AuthContext)
+  const notifySignUpSuccess = () => toast(jaTranslate('success.action', 'actions.signUp'));
+  const notifySignUpFailure = () => toast(jaTranslate('failure.action', 'actions.signUp'));
 
-  const { register, handleSubmit, formState: { errors } } = useForm<SignInParams>({
+  const { register, handleSubmit, formState: { errors } } = useForm<SignUpParams>({
     resolver: yupResolver(schema)
   });
 
-  const onSubmit: SubmitHandler<SignInParams> = async (data: SignInParams) => {
-    const { headers, responseData, status } = await signIn(data);
+  const onSubmit: SubmitHandler<SignUpParams> = async (data: SignUpParams) => {
+    const { headers, responseData, status } = await signUp(data);
 
     if ((status === 200) && headers) {
       setCurrentUser(responseData);
       setIsSignedIn(true);
       setCookies(headers);
 
-      navigate("/home");
-      notifySignInSuccess();
+      navigate("/");
+      notifySignUpSuccess();
     } else {
-      notifySignInFailure();
+      notifySignUpFailure();
     }
   };
 
   return (
-    <Container maxWidth = "sm" className = { classes.root } >
-      <h1>{jaTranslate('actions.signIn')}</h1>
+    <Container maxWidth="sm" className={classes.root}>
+      <h1>{jaTranslate('actions.signUp')}</h1>
       <form onSubmit={handleSubmit(onSubmit)} className={classes.formWrapper}>
+        <div className={classes.form}>
+          <TextField
+            fullWidth
+            label={jaTranslate('model.user.nickname')}
+            className={classes.form}
+            {...register("nickname", { required: true, minLength: 2, maxLength: 10 })}
+          />
+          { errors.nickname && (
+            <span className={classes.errorMessage} color="danger">
+              * {errors.nickname.message}
+            </span>
+          )}
+        </div>
+
         <div className={classes.form}>
           <TextField
             fullWidth
@@ -120,11 +136,11 @@ const SignIn = (): JSX.Element => {
         color="warning"
         size="large"
         className={classes.button}
-        onClick={() => navigate('/sign_up')}>
-        {jaTranslate('actions.signUp')}
+        onClick={() => navigate('/sign_in')}>
+        {jaTranslate('actions.signIn')}
       </Button>
-    </Container >
+    </Container>
   )
-};
+}
 
-export default SignIn;
+export default SignUp;
