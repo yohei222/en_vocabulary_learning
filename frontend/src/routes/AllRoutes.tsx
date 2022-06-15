@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import Home from "components/Home";
-import SignIn from "components/SignIn";
-import SignUp from "components/SignUp";
+import SignIn from "components/auth/SignIn";
+import SignUp from "components/auth/SignUp";
+import VocabulariesIndex from "components/vocabulary/VocabulariesIndex";
 import { AuthContext } from "contexts/AuthContext";
 import { getCurrentUser } from "lib/api/auth";
 import PATH from 'path/FRONTEND_PATH';
@@ -27,7 +27,7 @@ const AllRoutes = (): JSX.Element => {
         setIsSignedIn(true);
         setCurrentUser(res?.data.data);
 
-        if (AUTH_RELATED_PATH.includes(path)) navigate("/home");
+        if (AUTH_RELATED_PATH.includes(path)) navigate("/");
       } else {
         navigate((path === PATH.SIGN_IN) ? PATH.SIGN_IN : PATH.SIGN_UP);
       }
@@ -46,7 +46,7 @@ const AllRoutes = (): JSX.Element => {
     <Routes>
       <Route path={PATH.SIGN_UP} element={<SignUp />} />
       <Route path={PATH.SIGN_IN} element={<SignIn />} />
-      <Route path="/home" element={<PrivateRoute children={<Home />} />} />
+      <Route path="/" element={<PrivateRoute children={<VocabulariesIndex />} />} />
     </Routes>
   )
 }

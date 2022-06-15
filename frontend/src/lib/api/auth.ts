@@ -3,13 +3,14 @@ import { SignUpParams, SignInParams } from "type";
 import API_PATH from "path/API_PATH";
 import getCookies from "utilities/cookies/getCookies";
 
-export const tokenAuthHeaders = () => {
+export const tokenAuthHeaders = (): any => {
   const { accessToken, cookieClient, uid } = getCookies();
 
   return {
     "access-token": accessToken as string,
     "client": cookieClient as string,
     "uid": uid as string,
+    "ignoreHeaders": true
   }
 }
 

@@ -68,7 +68,7 @@ const SignUp = (): JSX.Element => {
       setIsSignedIn(true);
       setCookies(headers);
 
-      navigate("/home");
+      navigate("/");
       notifySignUpSuccess();
     } else {
       notifySignUpFailure();

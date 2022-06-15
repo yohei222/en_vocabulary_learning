@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { createStyles, makeStyles } from '@material-ui/core/styles';
 import { Button, Container, TextField } from '@mui/material';
 import Color from 'Color';
 import { AuthContext } from "contexts/AuthContext";
@@ -14,7 +14,7 @@ import { SignInParams } from "type";
 import setCookies from "utilities/cookies/setCookies";
 import * as yup from "yup";
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
   createStyles({
     root: {
       marginTop: '10px',
@@ -66,7 +66,7 @@ const SignIn = (): JSX.Element => {
       setIsSignedIn(true);
       setCookies(headers);
 
-      navigate("/home");
+      navigate("/");
       notifySignInSuccess();
     } else {
       notifySignInFailure();
@@ -74,7 +74,7 @@ const SignIn = (): JSX.Element => {
   };
 
   return (
-    <Container maxWidth = "sm" className = { classes.root } >
+    <Container maxWidth="sm" className={ classes.root } >
       <h1>{jaTranslate('actions.signIn')}</h1>
       <form onSubmit={handleSubmit(onSubmit)} className={classes.formWrapper}>
         <div className={classes.form}>

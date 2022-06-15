@@ -1,29 +1,63 @@
 {
+  "appName": "英単語学習アプリ",
   "model": {
     "user": {
+      "modelName": "ユーザー",
       "email": "Emailアドレス",
       "password": "パスワード",
       "nickname": "ニックネーム"
+    },
+    "vocabulary": {
+      "modelName": "単語",
+      "vocabularyEn": "英単語",
+      "meaningJa": "意味",
+      "comprehensionRate": "理解度",
+      "comprehensionRateList": {
+        "high": "高い",
+        "middle": "まあまあ",
+        "low": "要復習"
+      },
+      "memo": "メモ",
+      "createdAt": "作成日時",
+      "updatedAt": "更新日時"
     }
   },
   "crud": {
-    "create": "{{object}}を新規作成",
-    "update": "{{object}}を編集"
+    "create": "新規作成",
+    "createWithObjectName": "{{object}}を新規作成する",
+    "editWithObjectName": "{{object}}を変更する",
+    "update": "更新",
+    "updateWithObjectName": "{{object}}を更新する",
+    "add": "{{object}}を追加する",
+    "remove": "{{object}}を取り消す",
+    "updateWithSpecifiedValue": "「{{object}}」に更新する"
   },
   "actions": {
     "submit": "送信",
     "signIn": "ログイン",
-    "signUp": "サインアップ"
+    "signUp": "サインアップ",
+    "confirm": {
+      "delete": "本当に削除してもよろしいですか？"
+    }
   },
   "errors": {
     "required": "{{object}}は必須項目です"
   },
   "success": {
     "action": "{{object}}に成功しました",
-    "create": "{{object}}の作成に成功しました"
+    "create": "{{object}}の作成に成功しました",
+    "update": "{{object}}の更新に成功しました",
+    "bulkDelete": "{{object}}の一括削除に成功しました"
   },
   "failure": {
     "action": "{{object}}に失敗しました",
-    "create": "{{object}}の作成に失敗しました"
+    "create": "{{object}}の作成に失敗しました",
+    "update": "{{object}}の更新に失敗しました",
+    "bulkDelete": "{{object}}の一括削除に失敗しました"
+  },
+  "format": {
+    "datetime": {
+      "default": "YYYY年MM月DD日(ddd) HH:mm"
+    }
   }
 }

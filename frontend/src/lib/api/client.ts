@@ -1,5 +1,6 @@
 import applyCaseMiddleware from "axios-case-converter";
 import axios from "axios";
+import { tokenAuthHeaders } from "./auth";
 
 const options = {
   ignoreHeaders: true,
@@ -17,12 +18,87 @@ const client = applyCaseMiddleware(
   options
 );
 
-export const postRequest = async (path: string, params: any) => {
+export const postRequest = async (path: string, body: any) => {
   try {
-    const response = await client.post(path, params);
-    return { headers: response.headers, responseData: response.data.data, status: response.status };
+    const response = await client.post(path, body, {
+      headers: tokenAuthHeaders(),
+    });
+
+    return {
+      headers: response.headers,
+      responseData: response?.data?.data,
+      status: response.status,
+    };
   } catch (error: any) {
-    return { headers: undefined, responseData: undefined, status: error.response?.status };
+    return {
+      headers: undefined,
+      responseData: undefined,
+      status: error.response?.status,
+    };
+  }
+}
+
+export const patchRequest = async (path: string, body: any) => {
+  try {
+    const response = await client.patch(path, body, {
+      headers: tokenAuthHeaders(),
+    });
+
+    return {
+      headers: response.headers,
+      responseData: response?.data?.data,
+      status: response.status,
+    };
+  } catch (error: any) {
+    return {
+      headers: undefined,
+      responseData: undefined,
+      status: error.response?.status,
+    };
+  }
+};
+
+
+export const deleteRequest = async(path: string, body: any) => {
+  try {
+    const response = await client.delete(path, {
+      headers: tokenAuthHeaders(),
+      data: {
+        body
+      }
+    });
+
+    return { headers: response.headers, status: response.status };
+  } catch (error: any) {
+    return {
+      headers: undefined,
+      responseData: undefined,
+      status: error.response?.status,
+    };
+  }
+}
+
+export const getRequest = async (path: string, params?: any) => {
+
+  const config = {
+    headers: tokenAuthHeaders(),
+    params: params,
+  };
+
+  try {
+    const response = await client.get(path, config)
+
+    return {
+      headers: response.headers,
+      responseData: response.data,
+      status: response.status,
+    };
+  } catch (error: any) {
+    return {
+      headers: undefined,
+      responseData: undefined,
+      status: error.response?.status,
+    };
   }
 }
 

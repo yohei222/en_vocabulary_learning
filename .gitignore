@@ -10,6 +10,7 @@ backend/log/*
 backend/tmp/*
 backend!/log/.keep
 backend!/tmp/.keep
+backend/.env
 
 # Ignore pidfiles, but keep the directory.
 backend/tmp/pids/*
@@ -25,6 +26,8 @@ backend.byebug_history
 backend/config/master.key
 
 ### frontend
+
+frontend/.env
 
 # dependencies
 frontend/node_modules
