@@ -2,6 +2,7 @@ import React from 'react'
 import { VocabularyContext, useVocabularyContext } from 'contexts/VocabularyContext';
 import VocabularyListTable from './VocabularyListTable';
 import VocabularyCreate from './VocabularyCreate';
+import VocabularyUpdate from './VocabularyUpdate';
 import VocabularyBulkDelete from './VocabularyBulkDelete';
 import VocabularySearchField from './VocabularySearchField';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
@@ -27,12 +28,12 @@ const VocabulariesIndex = (): JSX.Element => {
       <div className={classes.root}>
         <h1>{jaTranslate('appName')}</h1>
         <VocabularySearchField />
-        {/* todo 理解度をテーブル表示から更新できる機能の実装 */}
-        {/* todo 続けて登録するボタンの実装 */}
-        {/* todo 新規作成後のローディングモーダルのタイミングを早くする */}
+        {/* todo デプロイする */}
         {/* todo 英単語の音声確認をする機能を追加 */}
+        {/* todo リファクタリング(jaTranslateにする, useMemoに変更する、など) */}
         <VocabularyBulkDelete />
         <VocabularyCreate />
+        <VocabularyUpdate />
         <VocabularyListTable />
       </div>
     </VocabularyContext.Provider>

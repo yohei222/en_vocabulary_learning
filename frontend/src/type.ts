@@ -21,6 +21,16 @@ export type VocabularyCreateParams = {
   };
 };
 
+export type VocabularyUpdateParams = {
+  id: string;
+  vocabularyEn: string;
+  meaningJa: string;
+  vocabularyDetail: {
+    comprehensionRate: string;
+    memo: string;
+  };
+};
+
 export type VocabularyCreateInput = {
   vocabularyEn: string;
   meaningJa: string;

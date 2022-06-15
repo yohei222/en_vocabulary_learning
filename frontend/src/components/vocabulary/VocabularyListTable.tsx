@@ -36,7 +36,7 @@ const useStyles = makeStyles(() =>
       position: 'absolute' as 'absolute',
       top: '40%',
       left: '50%',
-      height: '30%',
+      height: '300px',
       padding: '20px 40px',
       transform: 'translate(-50%, -50%)',
       width: '20%',
@@ -57,6 +57,21 @@ const useStyles = makeStyles(() =>
     },
     fontBold: {
       fontWeight: "bold",
+      marginLeft: "3px"
+    },
+    flex: {
+      display: "flex",
+      alignItems: "center"
+    },
+    modalButton: {
+      height: "60%",
+    },
+    alignRight: {
+      marginLeft: "auto",
+      marginRight: "20px"
+    },
+    marginRight: {
+      marginRight: "20px"
     }
   })
 );
@@ -64,16 +79,19 @@ const useStyles = makeStyles(() =>
 const VocabularyListTable = (): JSX.Element => {
   const classes = useStyles();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [selectedRecord, setSelectedRecord] = useState<Vocabulary | undefined>(undefined);
   const [isComprehensionRateChangeModalOpen, setIsComprehensionRateChangeModalOpen] = useState<boolean>(false);
   const notifyUpdateSuccess = () => toast(jaTranslate('success.update', 'model.vocabulary.modelName'));
   const notifyUpdateFailure = () => toast(jaTranslate('failure.update', 'model.vocabulary.modelName'));
 
   const {
     isLoading,
+    setIsLoading,
     vocabularyList,
     setCheckedRecordIds,
-    setIsVocabularyListChanged
+    selectedRecord,
+    setSelectedRecord,
+    setIsUpdateModalOpen,
+    renewRecords
   } = useContext(VocabularyContext);
 
   if (isLoading) {
@@ -101,7 +119,12 @@ const VocabularyListTable = (): JSX.Element => {
     {
       field: 'createdAt',
       headerName: jaTranslate('model.vocabulary.createdAt'),
-      width: 200,
+      width: 250,
+    },
+    {
+      field: 'updatedAt',
+      headerName: jaTranslate('model.vocabulary.updatedAt'),
+      width: 250,
     },
     {
       field: 'memo',
@@ -112,7 +135,8 @@ const VocabularyListTable = (): JSX.Element => {
   ];
 
   const rows = vocabularyList.map((vocabulary) => {
-    const jaDateTime = moment(vocabulary.createdAt).format(jaTranslate('format.date.default'))
+    const jaCreatedAt = moment(vocabulary.createdAt).format(jaTranslate('format.datetime.default'))
+    const jaUpdatedAt = moment(vocabulary.updatedAt).format(jaTranslate('format.datetime.default'))
 
     return {
       id: vocabulary.id,
@@ -120,7 +144,8 @@ const VocabularyListTable = (): JSX.Element => {
       meaning_ja: vocabulary.meaningJa,
       comprehension_rate: jaTranslate(`model.vocabulary.comprehensionRateList.${vocabulary.vocabularyDetail.comprehensionRate}`),
       memo: vocabulary.vocabularyDetail.memo,
-      createdAt: jaDateTime,
+      createdAt: jaCreatedAt,
+      updatedAt: jaUpdatedAt,
     }
   })
 
@@ -128,18 +153,23 @@ const VocabularyListTable = (): JSX.Element => {
     const newRecord = record;
     newRecord.vocabularyDetail.comprehensionRate = clickedRate;
 
+    setIsLoading(true);
+    setIsComprehensionRateChangeModalOpen(false);
+
     const { status } = await patchRequest(
       `${API_PATH.VOCABULARIES.UPDATE}/${record.id}`, newRecord
     );
 
     if (status === 200) {
-      setIsVocabularyListChanged(true)
       setSelectedRecord(undefined);
-      setIsComprehensionRateChangeModalOpen(false)
       notifyUpdateSuccess();
+      renewRecords();
     } else {
+      setIsComprehensionRateChangeModalOpen(true);
       notifyUpdateFailure();
     }
+
+    setIsLoading(false);
   }
 
   const onCellClick = (params: GridCellParams) => {
@@ -200,7 +230,12 @@ const VocabularyListTable = (): JSX.Element => {
           {(selectedRecord) && (
             <>
               <h3>{jaTranslate('crud.editWithObjectName', '理解度')}</h3>
-              <p>現在の理解度：
+              <p>{jaTranslate('model.vocabulary.vocabularyEn')}:
+                <span className={classes.fontBold}>
+                  {selectedRecord.vocabularyEn}
+                </span>
+              </p>
+              <p>現在の理解度:
                 <span className={classes.fontBold}>
                   {jaTranslate(`model.vocabulary.comprehensionRateList.${selectedRecord.vocabularyDetail.comprehensionRate}`)}
                 </span>
@@ -256,9 +291,42 @@ const VocabularyListTable = (): JSX.Element => {
         <Box className={ classes.modal }>
           {(selectedRecord) && (
             <>
-              <h2 id="parent-modal-title">
-                {selectedRecord.vocabularyEn} : {selectedRecord.meaningJa}
-              </h2>
+              <div className={classes.flex}>
+                <h2 id="parent-modal-title">
+                  {selectedRecord.vocabularyEn} : {selectedRecord.meaningJa}
+                </h2>
+                <p className={classes.alignRight}>理解度:
+                  <span className={classes.fontBold}>
+                    {jaTranslate(`model.vocabulary.comprehensionRateList.${selectedRecord.vocabularyDetail.comprehensionRate}`)}
+                  </span>
+                </p>
+                <span className={classes.marginRight}>
+                  <Button
+                    variant="contained"
+                    color="info"
+                    className={classes.modalButton}
+                    onClick={() => {
+                      setIsModalOpen(false)
+                      setIsComprehensionRateChangeModalOpen(true)
+                    }}
+                  >
+                    理解度を変更する
+                  </Button>
+                </span>
+                <span>
+                  <Button
+                    variant="contained"
+                    color="warning"
+                    className={classes.modalButton}
+                    onClick={() => {
+                      setIsModalOpen(false)
+                      setIsUpdateModalOpen(true)
+                    }}
+                  >
+                    英単語を編集する
+                  </Button>
+                </span>
+              </div>
               {(selectedRecord.vocabularyUsages) && (
                 (selectedRecord.vocabularyUsages).map((usage, i) => {
                   return (
@@ -280,23 +348,14 @@ const VocabularyListTable = (): JSX.Element => {
                   )
                 })
               )}
-              <div className={classes.buttonContainer}>
-                <Button
-                  variant="contained"
-                  color="info"
-                  className={classes.button}
-                  onClick={() => {
-                    setIsModalOpen(false)
-                    setIsComprehensionRateChangeModalOpen(true)
-                  }}
-                >
-                  理解度を変更する
-                </Button>
-              </div>
+              {(selectedRecord.vocabularyDetail.memo !== "") && (
+                <>
+                  <h3>メモ</h3>
+                  {selectedRecord.vocabularyDetail.memo}
+                </>
+              )}
             </>
           )}
-          {/* todo 編集できるモーダルを作成する？ */}
-          {/* <ChildModal /> */}
         </Box>
       </Modal>
 

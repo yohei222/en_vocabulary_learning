@@ -9,15 +9,15 @@ import Modal from '@mui/material/Modal';
 import Select from '@mui/material/Select';
 import Color from 'Color';
 import { VocabularyContext } from 'contexts/VocabularyContext';
-import { postRequest } from 'lib/api/client';
+import { patchRequest } from 'lib/api/client';
 import { jaTranslate } from "locales/i18n";
 import API_PATH from "path/API_PATH";
 import React, { useContext, useState } from 'react';
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from 'react-toastify';
 import { VocabularyCreateInput, VocabularyCreateParams } from "type";
-import * as yup from "yup";
 import vocabularyInputToParamsConverter from 'utilities/vocabularyInputToParamsConverter';
+import * as yup from "yup";
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -72,68 +72,67 @@ const schema = yup.object({
   )
 }).required();
 
-
-const VocabularyCreate = (): JSX.Element => {
+const VocabularyUpdate = (): JSX.Element => {
   const classes = useStyles();
-  const [isAttachMemo, setIsAttachMemo] = useState<boolean>(false);
-  const [comprehensionValueLabel, setComprehensionValueLabel] = useState<string | undefined>(undefined);
-  const notifyCreateSuccess = () => toast(jaTranslate('success.create', 'model.vocabulary.modelName'));
-  const notifyCreateFailure = () => toast(jaTranslate('failure.create', 'model.vocabulary.modelName'));
-
   const {
     setIsLoading,
-    isCreateModalOpen,
-    setIsCreateModalOpen,
+    isUpdateModalOpen,
+    setIsUpdateModalOpen,
+    selectedRecord,
     renewRecords
   } = useContext(VocabularyContext);
 
-  const { register, handleSubmit, setValue, formState: { errors } } = useForm<VocabularyCreateInput>({
-    resolver: yupResolver(schema)
+  const notifyUpdateSuccess = () => toast(jaTranslate('success.update', 'model.vocabulary.modelName'));
+  const notifyUpdateFailure = () => toast(jaTranslate('failure.update', 'model.vocabulary.modelName'));
+  const [comprehensionValueLabel, setComprehensionValueLabel] = useState<string | undefined>(selectedRecord?.vocabularyDetail.comprehensionRate);
+
+  const { register, handleSubmit, formState: { errors } } = useForm<VocabularyCreateInput>({
+    mode: 'onChange',
+    reValidateMode: 'onChange',
+    resolver: yupResolver(schema),
+    defaultValues: {
+      vocabularyEn: selectedRecord?.vocabularyEn,
+      meaningJa: selectedRecord?.meaningJa,
+      comprehensionRate: selectedRecord?.vocabularyDetail.comprehensionRate,
+      memo: selectedRecord?.vocabularyDetail.memo
+    },
   });
 
   const onSubmit: SubmitHandler<VocabularyCreateInput> = async (data: VocabularyCreateInput) => {
-    const body: VocabularyCreateParams = vocabularyInputToParamsConverter(data);
+    const body: VocabularyCreateParams = vocabularyInputToParamsConverter(data)
 
-    setIsLoading(true)
-    setIsCreateModalOpen(false);
-
-    const { status } = await postRequest(
-      API_PATH.VOCABULARIES.CREATE, body
+    setIsLoading(true);
+    setIsUpdateModalOpen(false);
+    const { status } = await patchRequest(
+      `${API_PATH.VOCABULARIES.UPDATE}/${selectedRecord?.id}`, body
     );
 
     if (status === 200) {
-      notifyCreateSuccess();
+      notifyUpdateSuccess();
       renewRecords();
     } else {
-      setIsCreateModalOpen(true);
-      notifyCreateFailure();
+      setIsUpdateModalOpen(true);
+      notifyUpdateFailure();
     }
-    setIsLoading(false)
+    setIsLoading(false);
   };
 
   return (
     <>
-      <Button
-        variant="contained"
-        color="success"
-        size="large"
-        onClick={() => setIsCreateModalOpen(true)}>
-        {jaTranslate('crud.create', 'model.vocabulary.modelName')}
-      </Button>
-
-      {(isCreateModalOpen) && (
+      {(isUpdateModalOpen && selectedRecord) && (
         <Modal
-          open={isCreateModalOpen}
-          onClose={() => setIsCreateModalOpen(false)}
+          open={isUpdateModalOpen}
+          onClose={() => setIsUpdateModalOpen(false)}
         >
           <Box className={classes.modal}>
-            <h2>{jaTranslate('crud.createWithObjectName', 'model.vocabulary.modelName')}</h2>
+            <h2>英単語を編集する</h2>
             <form onSubmit={handleSubmit(onSubmit)} className={classes.formWrapper}>
               <div className={classes.form}>
                 <TextField
                   fullWidth
                   label={jaTranslate('model.vocabulary.vocabularyEn')}
                   className={classes.form}
+                  defaultValue={selectedRecord?.vocabularyEn}
                   {...register("vocabularyEn", { required: true, minLength: 1, maxLength: 50 })}
                 />
                 {errors.vocabularyEn && (
@@ -148,6 +147,7 @@ const VocabularyCreate = (): JSX.Element => {
                   fullWidth
                   label={jaTranslate('model.vocabulary.meaningJa')}
                   className={classes.form}
+                  defaultValue={selectedRecord?.meaningJa}
                   {...register("meaningJa", { required: true, minLength: 1, maxLength: 30 })}
                 />
                 {errors.meaningJa && (
@@ -164,6 +164,7 @@ const VocabularyCreate = (): JSX.Element => {
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     value={comprehensionValueLabel}
+                    defaultValue={selectedRecord?.vocabularyDetail.comprehensionRate}
                     label={jaTranslate('model.vocabulary.comprehensionRate')}
                     {...register("comprehensionRate")}
                     onChange={(e) =>
@@ -182,48 +183,17 @@ const VocabularyCreate = (): JSX.Element => {
                 )}
               </div>
 
-              {(!isAttachMemo) && (
-                <div className={classes.form}>
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    className={classes.attachMemoButton}
-                    onClick={() => {
-                      setIsAttachMemo(true)
-                    }}
-                  >
-                    {jaTranslate('crud.add', 'model.vocabulary.memo')}
-                  </Button>
-                </div>
-              )}
-
-              {(isAttachMemo) && (
-                <>
-                  <div className={classes.form}>
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      className={classes.attachMemoButton}
-                      onClick={() => {
-                        setIsAttachMemo(false)
-                        setValue('memo', '')
-                      }}
-                    >
-                      {jaTranslate('crud.remove', 'model.vocabulary.memo')}
-                    </Button>
-                  </div>
-                  <div className={classes.form}>
-                    <TextField
-                      multiline
-                      fullWidth
-                      rows={2}
-                      label={jaTranslate('model.vocabulary.memo')}
-                      className={classes.form}
-                      {...register("memo")}
-                    />
-                  </div>
-                </>
-              )}
+              <div className={classes.form}>
+                <TextField
+                  multiline
+                  fullWidth
+                  defaultValue={selectedRecord?.vocabularyDetail.memo}
+                  rows={2}
+                  label={jaTranslate('model.vocabulary.memo')}
+                  className={classes.form}
+                  {...register("memo")}
+                />
+              </div>
 
               <Button
                 variant="contained"
@@ -241,4 +211,4 @@ const VocabularyCreate = (): JSX.Element => {
   )
 }
 
-export default VocabularyCreate;
+export default VocabularyUpdate;

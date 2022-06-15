@@ -18,7 +18,8 @@
         "low": "要復習"
       },
       "memo": "メモ",
-      "createdAt": "作成日時"
+      "createdAt": "作成日時",
+      "updatedAt": "更新日時"
     }
   },
   "crud": {
@@ -51,11 +52,12 @@
   "failure": {
     "action": "{{object}}に失敗しました",
     "create": "{{object}}の作成に失敗しました",
+    "update": "{{object}}の更新に失敗しました",
     "bulkDelete": "{{object}}の一括削除に失敗しました"
   },
   "format": {
-    "date": {
-      "default": "YYYY年MM月DD日(ddd)"
+    "datetime": {
+      "default": "YYYY年MM月DD日(ddd) HH:mm"
     }
   }
 }
