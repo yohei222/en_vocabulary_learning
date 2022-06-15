@@ -11,6 +11,22 @@ export type SignInParams = {
   password: string;
 };
 
+export type VocabularyCreateParams = {
+  vocabularyEn: string;
+  meaningJa: string;
+  vocabularyDetail: {
+    comprehensionRate: string;
+    memo: string;
+  };
+};
+
+export type VocabularyCreateInput = {
+  vocabularyEn: string;
+  meaningJa: string;
+  comprehensionRate: string;
+  memo: string;
+};
+
 export type User = {
   id: number;
   uid: string;

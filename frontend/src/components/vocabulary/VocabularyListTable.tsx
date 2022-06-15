@@ -1,10 +1,10 @@
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-import { DataGrid, GridCellParams, GridColDef } from '@mui/x-data-grid';
+import { DataGrid, GridCellParams, GridColDef, GridSelectionModel } from '@mui/x-data-grid';
 import Loading from "components/Loading";
 import { VocabularyContext } from 'contexts/VocabularyContext';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Vocabulary } from 'type';
 
 const useStyles = makeStyles(() =>
@@ -24,6 +24,7 @@ const useStyles = makeStyles(() =>
       backgroundColor: 'white',
       boxShadow: '24',
       p: 4,
+      overflowY: 'scroll'
     },
     span: {
       fontWeight: 'bold'
@@ -60,7 +61,7 @@ const VocabularyListTable = (): JSX.Element => {
     {
       field: 'meaning_ja',
       headerName: '意味',
-      width: 150,
+      width: 300,
     },
     {
       field: 'comprehension_rate',
@@ -70,7 +71,7 @@ const VocabularyListTable = (): JSX.Element => {
     {
       field: 'memo',
       headerName: 'メモ',
-      width: 300,
+      width: 600,
     },
   ];
 
@@ -79,34 +80,24 @@ const VocabularyListTable = (): JSX.Element => {
       id: vocabulary.id,
       vocabulary_en: vocabulary.vocabularyEn,
       meaning_ja: vocabulary.meaningJa,
+      // jaTranslateで翻訳する必要がある
       comprehension_rate: vocabulary.vocabularyDetail.comprehensionRate,
       memo: vocabulary.vocabularyDetail.memo,
     }
   })
 
-  const onCheckCellClick = (params: GridCellParams) => {
-    const checkedId = params.row.id
-    if (checkedRecordIds.includes(checkedId)) {
-      const newCheckedRecordIds = checkedRecordIds.filter((id) => (id !== checkedId))
-      setCheckedRecordIds(newCheckedRecordIds);
-    } else {
-      checkedRecordIds.push(checkedId)
-      setCheckedRecordIds(checkedRecordIds);
-    }
-  }
-
+  // todo 一括選択などの処理に対応できるようにする
+  // ↓これを参考に実装する！
+  // https://codesandbox.io/s/unruffled-hawking-8kez0?fontsize=14&hidenavigation=1&theme=dark&view=editor
   const onCellClick = (params: GridCellParams) => {
     const checkedId = params.row.id
+    if (params.field === '__check__') return;
 
-    if (params.field === '__check__') {
-      onCheckCellClick(params)
-    } else {
-      const record = vocabularyList.find((vocabulary) => (
-        vocabulary.id === checkedId
-      ))
-      setSelectedRecord(record);
-      setIsModalOpen(true);
-    }
+    const record = vocabularyList.find((vocabulary) => (
+      vocabulary.id === checkedId
+    ))
+    setSelectedRecord(record);
+    setIsModalOpen(true);
   };
 
   return (
@@ -125,10 +116,12 @@ const VocabularyListTable = (): JSX.Element => {
           rowsPerPageOptions={[10]}
           checkboxSelection
           disableSelectionOnClick
+          onSelectionModelChange={(newSelection) =>
+            setCheckedRecordIds(newSelection)
+          }
         />
       </div>
 
-      {/* modalが長すぎる場合、スライドできるようにする */}
       <Modal
         open={isModalOpen}
         onClose={() => setIsModalOpen(false)}
