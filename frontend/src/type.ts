@@ -1,5 +1,6 @@
 // todo paramsとmodelのtypeで別ファイルに分ける？
 
+// params
 export type SignUpParams = {
   nickname: string;
   email: string;
@@ -27,6 +28,8 @@ export type VocabularyCreateInput = {
   memo: string;
 };
 
+
+// models
 export type User = {
   id: number;
   uid: string;

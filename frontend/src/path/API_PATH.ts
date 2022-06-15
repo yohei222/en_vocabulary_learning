@@ -8,6 +8,7 @@ export const API_PATH = {
   VOCABULARIES: {
     INDEX: "vocabularies",
     CREATE: "vocabularies",
+    UPDATE: "vocabularies",
     BULK_DELETE: "bulk/vocabularies"
   },
 };

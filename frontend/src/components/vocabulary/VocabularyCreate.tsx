@@ -71,6 +71,17 @@ const schema = yup.object({
   )
 }).required();
 
+const inputToParamsConverter = (data: VocabularyCreateInput): VocabularyCreateParams => {
+  return {
+    vocabularyEn: data.vocabularyEn,
+    meaningJa: data.meaningJa,
+    vocabularyDetail: {
+      comprehensionRate: data.comprehensionRate,
+      memo: data.memo
+    }
+  }
+}
+
 const VocabularyCreate = (): JSX.Element => {
   const classes = useStyles();
   const [isAttachMemo, setIsAttachMemo] = useState<boolean>(false);
@@ -87,17 +98,6 @@ const VocabularyCreate = (): JSX.Element => {
   const { register, handleSubmit, setValue, formState: { errors } } = useForm<VocabularyCreateInput>({
     resolver: yupResolver(schema)
   });
-
-  const inputToParamsConverter = (data: VocabularyCreateInput): VocabularyCreateParams => {
-    return {
-      vocabularyEn: data.vocabularyEn,
-      meaningJa: data.meaningJa,
-      vocabularyDetail: {
-        comprehensionRate: data.comprehensionRate,
-        memo: data.memo
-      }
-    }
-  }
 
   const onSubmit: SubmitHandler<VocabularyCreateInput> = async (data: VocabularyCreateInput) => {
     const body: VocabularyCreateParams = inputToParamsConverter(data)

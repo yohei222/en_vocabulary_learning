@@ -27,10 +27,9 @@ const VocabulariesIndex = (): JSX.Element => {
       <div className={classes.root}>
         <h1>{jaTranslate('appName')}</h1>
         <VocabularySearchField />
-        {/* todo テーブルに作成日を追加する→ソートできるカラムvocabularyと理解度、作成日のみに変更する */}
-        {/* todo 新規作成後のローディングモーダルのタイミングを早くする */}
         {/* todo 理解度をテーブル表示から更新できる機能の実装 */}
         {/* todo 続けて登録するボタンの実装 */}
+        {/* todo 新規作成後のローディングモーダルのタイミングを早くする */}
         {/* todo 英単語の音声確認をする機能を追加 */}
         <VocabularyBulkDelete />
         <VocabularyCreate />

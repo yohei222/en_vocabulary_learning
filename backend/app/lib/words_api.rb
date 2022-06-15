@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 class WordsApi
-  WORDS_API_DOMAIN = "https://wordsapiv1.p.rapidapi.com/words"
+  WORDS_API_DOMAIN = "https://wordsapiv1.p.rapidapi.com"
 
   def self.fetch(word)
     conn = Faraday.new(
-      url: 'https://wordsapiv1.p.rapidapi.com/words/' + word,
+      url: self.words_api_request_url(word),
       headers: {
         "X-RapidAPI-Key" => ENV["X_RAPIDAPI_KEY"],
         "X-RapidAPI-Host" => ENV["X_RAPIDAPI_HOST"]
