@@ -1,11 +1,13 @@
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-import { DataGrid, GridCellParams, GridColDef, GridSelectionModel } from '@mui/x-data-grid';
+import { DataGrid, GridCellParams, GridColDef } from '@mui/x-data-grid';
 import Loading from "components/Loading";
 import { VocabularyContext } from 'contexts/VocabularyContext';
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState } from 'react';
 import { Vocabulary } from 'type';
+import { jaTranslate } from "locales/i18n";
+import moment from "moment"
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -39,12 +41,7 @@ const VocabularyListTable = (): JSX.Element => {
 
   const {
     isLoading,
-    setIsLoading,
     vocabularyList,
-    setVocabularyList,
-    params,
-    setParams,
-    checkedRecordIds,
     setCheckedRecordIds
   } = useContext(VocabularyContext);
 
@@ -55,40 +52,46 @@ const VocabularyListTable = (): JSX.Element => {
   const columns: GridColDef[] = [
     {
       field: 'vocabulary_en',
-      headerName: 'Vocabulary',
-      width: 150,
+      headerName: jaTranslate('model.vocabulary.vocabularyEn'),
+      width: 200,
     },
     {
       field: 'meaning_ja',
-      headerName: '意味',
-      width: 300,
+      headerName: jaTranslate('model.vocabulary.meaningJa'),
+      width: 250,
+      sortable: false
     },
     {
       field: 'comprehension_rate',
-      headerName: '理解度',
+      headerName: jaTranslate('model.vocabulary.comprehensionRate'),
       width: 110,
     },
     {
+      field: 'createdAt',
+      headerName: jaTranslate('model.vocabulary.createdAt'),
+      width: 200,
+    },
+    {
       field: 'memo',
-      headerName: 'メモ',
-      width: 600,
+      headerName: jaTranslate('model.vocabulary.memo'),
+      width: 500,
+      sortable: false
     },
   ];
 
   const rows = vocabularyList.map((vocabulary) => {
+    const jaDateTime = moment(vocabulary.createdAt).format(jaTranslate('format.date.default'))
+
     return {
       id: vocabulary.id,
       vocabulary_en: vocabulary.vocabularyEn,
       meaning_ja: vocabulary.meaningJa,
-      // jaTranslateで翻訳する必要がある
-      comprehension_rate: vocabulary.vocabularyDetail.comprehensionRate,
+      comprehension_rate: jaTranslate(`model.vocabulary.comprehensionRateList.${vocabulary.vocabularyDetail.comprehensionRate}`),
       memo: vocabulary.vocabularyDetail.memo,
+      createdAt: jaDateTime,
     }
   })
 
-  // todo 一括選択などの処理に対応できるようにする
-  // ↓これを参考に実装する！
-  // https://codesandbox.io/s/unruffled-hawking-8kez0?fontsize=14&hidenavigation=1&theme=dark&view=editor
   const onCellClick = (params: GridCellParams) => {
     const checkedId = params.row.id
     if (params.field === '__check__') return;
@@ -104,6 +107,11 @@ const VocabularyListTable = (): JSX.Element => {
     <>
       <div className={classes.root}>
         <DataGrid
+          initialState={{
+            sorting: {
+              sortModel: [{ field: 'createdAt', sort: 'desc' }],
+            },
+          }}
           rows={rows}
           columns={columns}
           onCellClick={onCellClick}
@@ -155,7 +163,7 @@ const VocabularyListTable = (): JSX.Element => {
               )}
             </>
           )}
-          {/* 編集できるモーダルを作成する？ */}
+          {/* todo 編集できるモーダルを作成する？ */}
           {/* <ChildModal /> */}
         </Box>
       </Modal>

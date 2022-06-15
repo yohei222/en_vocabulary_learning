@@ -1,21 +1,9 @@
-import React, { useContext, useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { VocabularyContext } from 'contexts/VocabularyContext';
-import { createStyles, makeStyles } from '@material-ui/core/styles';
-import { jaTranslate } from "locales/i18n";
-
-const useStyles = makeStyles(() =>
-  createStyles({
-    root: {
-      height: 500,
-      marginTop: '20px'
-    },
-  })
-);
+import React, { useContext, useEffect, useState } from 'react';
 
 const VocabularySearchField = (): JSX.Element => {
-  const classes = useStyles();
   const { setParams } = useContext(VocabularyContext);
   const [searchText, setSearchText] = useState<string | undefined>(undefined);
 
@@ -27,8 +15,9 @@ const VocabularySearchField = (): JSX.Element => {
   return (
     <Box
       sx={{
-        maxWidth: '80%',
-        mt: 3
+        maxWidth: '100%',
+        mt: 3,
+        mb: 3
       }}
     >
       <TextField

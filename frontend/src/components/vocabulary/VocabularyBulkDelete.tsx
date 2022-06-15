@@ -1,24 +1,12 @@
-// このファイルを実装するところから！
 import { createStyles, makeStyles } from '@material-ui/core/styles';
-import React, { useContext, useState } from 'react'
-import { Button, Container, TextField } from '@mui/material';
-import { VocabularyContext } from 'contexts/VocabularyContext';
-import Modal from '@mui/material/Modal';
+import { Button } from '@mui/material';
 import Box from '@mui/material/Box';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { SubmitHandler, useForm } from "react-hook-form";
-import { VocabularyCreateParams, VocabularyCreateInput } from "type";
-import * as yup from "yup";
-import Color from 'Color';
-import { jaTranslate } from "locales/i18n";
+import Modal from '@mui/material/Modal';
+import { VocabularyContext } from 'contexts/VocabularyContext';
 import { deleteRequest } from 'lib/api/client';
-import API_PATH from "path/API_PATH";
+import { jaTranslate } from "locales/i18n";
+import React, { useContext, useMemo, useState } from 'react';
 import { toast } from 'react-toastify';
-import Loading from "components/Loading";
-import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -30,19 +18,24 @@ const useStyles = makeStyles(() =>
       position: 'absolute' as 'absolute',
       top: '30%',
       left: '50%',
-      height: '20%',
+      height: '200px',
       padding: '20px 40px',
       transform: 'translate(-50%, -50%)',
-      width: '30%',
+      width: '400px',
       backgroundColor: 'white',
       boxShadow: '24',
       p: 4,
       overflowY: 'scroll'
     },
     button: {
-      width: '40%',
-      marginLeft: 'auto',
-      marginRight: 'auto,'
+      marginRight: '10px'
+    },
+    modalButton: {
+      marginRight: '10px'
+    },
+    bold: {
+      fontWeight: 'bold',
+      marginBottom: '10px'
     }
   })
 );
@@ -50,48 +43,43 @@ const useStyles = makeStyles(() =>
 const VocabularyBulkDelete = ():JSX.Element => {
   const classes = useStyles();
   const {
-    vocabularyList,
-    setVocabularyList,
-    params,
-    setParams,
-    isCreateModalOpen,
     setIsCreateModalOpen,
     setIsVocabularyListChanged,
     checkedRecordIds,
-    setCheckedRecordIds
   } = useContext(VocabularyContext);
-  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState<boolean>(false);
-  // todo 修正する
-  const notifySignUpSuccess = () => toast(jaTranslate('success.action', 'actions.signUp'));
-  const notifySignUpFailure = () => toast(jaTranslate('failure.action', 'actions.signUp'));
 
-  // useMemoに変更する
-  const checkedRecordIdsCount = checkedRecordIds.length;
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState<boolean>(false);
+  const notifyBulkDeleteSuccess = () => toast(jaTranslate('success.bulkDelete', 'model.vocabulary.modelName'));
+  const notifyBulkDeleteFailure = () => toast(jaTranslate('failure.bulkDelete', 'model.vocabulary.modelName'));
+
+  const checkedRecordIdsCount = useMemo(() =>
+    checkedRecordIds.length
+  , [checkedRecordIds])
 
   const handleBulkDeleteClick = async () => {
-    debugger;
     const { status } = await deleteRequest("bulk/vocabularies", { ids: checkedRecordIds });
 
-    debugger;
     if (status === 200) {
       setIsVocabularyListChanged(true)
       setIsConfirmModalOpen(false)
-      notifySignUpSuccess();
+      notifyBulkDeleteSuccess();
     } else {
-      notifySignUpFailure();
+      notifyBulkDeleteFailure();
     }
   }
 
   return (
     <>
       {(checkedRecordIdsCount >= 1) && (
-        <Button
-          variant="contained"
-          color="warning"
-          size="large"
-          onClick={() => setIsConfirmModalOpen(true)}>
-          一括削除
-        </Button>
+        <span className={classes.button}>
+          <Button
+            variant="contained"
+            color="warning"
+            size="large"
+            onClick={() => setIsConfirmModalOpen(true)}>
+            一括削除
+          </Button>
+        </span>
       )}
 
       {(isConfirmModalOpen) && (
@@ -100,24 +88,26 @@ const VocabularyBulkDelete = ():JSX.Element => {
           onClose={() => setIsCreateModalOpen(false)}
         >
           <Box className={classes.modal}>
-            本当に削除してもよろしいですか？
-            (削除件数：{checkedRecordIdsCount}件)
-            <Button
-              variant="contained"
-              color="warning"
-              size="large"
-              className={classes.button}
-              onClick={() => handleBulkDeleteClick()}>
-              削除する
-            </Button>
-            <Button
-              variant="contained"
-              color="success"
-              size="large"
-              className={classes.button}
-              onClick={() => setIsConfirmModalOpen(false)}>
-              閉じる
-            </Button>
+            <p>{jaTranslate('actions.confirm.delete')}</p>
+            <p>削除件数：<span className={classes.bold}>{checkedRecordIdsCount}件</span></p>
+            <span className={classes.modalButton}>
+              <Button
+                variant="contained"
+                color="warning"
+                size="large"
+                onClick={() => handleBulkDeleteClick()}>
+                削除する
+              </Button>
+            </span>
+            <span className={classes.modalButton}>
+              <Button
+                variant="contained"
+                color="success"
+                size="large"
+                onClick={() => setIsConfirmModalOpen(false)}>
+                閉じる
+              </Button>
+            </span>
           </Box>
         </Modal>
       )}

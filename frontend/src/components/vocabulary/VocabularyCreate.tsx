@@ -1,23 +1,22 @@
-import { createStyles, makeStyles } from '@material-ui/core/styles';
-import React, { useContext, useState } from 'react'
-import { Button, Container, TextField } from '@mui/material';
-import { VocabularyContext } from 'contexts/VocabularyContext';
-import Modal from '@mui/material/Modal';
-import Box from '@mui/material/Box';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { SubmitHandler, useForm } from "react-hook-form";
-import { VocabularyCreateParams, VocabularyCreateInput } from "type";
-import * as yup from "yup";
-import Color from 'Color';
-import { jaTranslate } from "locales/i18n";
-import { postRequest } from 'lib/api/client';
-import API_PATH from "path/API_PATH";
-import { toast } from 'react-toastify';
-import Loading from "components/Loading";
+import { createStyles, makeStyles } from '@material-ui/core/styles';
+import { Button, TextField } from '@mui/material';
+import Box from '@mui/material/Box';
 import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
+import Modal from '@mui/material/Modal';
+import Select from '@mui/material/Select';
+import Color from 'Color';
+import { VocabularyContext } from 'contexts/VocabularyContext';
+import { postRequest } from 'lib/api/client';
+import { jaTranslate } from "locales/i18n";
+import API_PATH from "path/API_PATH";
+import React, { useContext, useState } from 'react';
+import { SubmitHandler, useForm } from "react-hook-form";
+import { toast } from 'react-toastify';
+import { VocabularyCreateInput, VocabularyCreateParams } from "type";
+import * as yup from "yup";
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -60,19 +59,15 @@ const useStyles = makeStyles(() =>
   })
 );
 
-// todo 書き直す
 const schema = yup.object({
-  vocabularyEn: yup.string().min(2).required(
-    // jaTranslate('errors.required', 'model.user.nickname')
-    "ほげ"
+  vocabularyEn: yup.string().required(
+    jaTranslate('errors.required', 'model.vocabulary.vocabularyEn')
   ),
-  meaningJa: yup.string().min(1).required(
-    // jaTranslate('errors.required', 'model.user.email')
-    "ほげ"
+  meaningJa: yup.string().required(
+    jaTranslate('errors.required', 'model.vocabulary.meaningJa')
   ),
   comprehensionRate: yup.string().required(
-    // jaTranslate('errors.required', 'model.user.email')
-    "ほげ"
+    jaTranslate('errors.required', 'model.vocabulary.comprehensionRate')
   )
 }).required();
 
@@ -80,17 +75,10 @@ const VocabularyCreate = (): JSX.Element => {
   const classes = useStyles();
   const [isAttachMemo, setIsAttachMemo] = useState<boolean>(false);
   const [comprehensionValueLabel, setComprehensionValueLabel] = useState<string | undefined>(undefined)
-  // todo 以下二つ、書き換える
-  const notifySignUpSuccess = () => toast(jaTranslate('success.action', 'actions.signUp'));
-  const notifySignUpFailure = () => toast(jaTranslate('failure.action', 'actions.signUp'));
+  const notifyCreateSuccess = () => toast(jaTranslate('success.create', 'model.vocabulary.modelName'));
+  const notifyCreateFailure = () => toast(jaTranslate('failure.create', 'model.vocabulary.modelName'));
 
   const {
-    vocabularyList,
-    setVocabularyList,
-    params,
-    setParams,
-    checkedRecordIds,
-    setCheckedRecordIds,
     isCreateModalOpen,
     setIsCreateModalOpen,
     setIsVocabularyListChanged
@@ -122,13 +110,13 @@ const VocabularyCreate = (): JSX.Element => {
     if (status === 200) {
       setIsVocabularyListChanged(true)
       setIsCreateModalOpen(false);
-      notifySignUpSuccess();
+      notifyCreateSuccess();
     } else {
-      notifySignUpFailure();
+      notifyCreateFailure();
     }
   };
 
-  // todo バックエンドに不要なparamsが送られるのを修正するところから
+  // todo バックエンドに不要なparams(vocabulary)が送られるのを修正する
   return (
     <>
       <Button
@@ -136,7 +124,7 @@ const VocabularyCreate = (): JSX.Element => {
         color="success"
         size="large"
         onClick={() => setIsCreateModalOpen(true)}>
-        新規作成
+        {jaTranslate('crud.create', 'model.vocabulary.modelName')}
       </Button>
 
       {(isCreateModalOpen) && (
@@ -145,11 +133,12 @@ const VocabularyCreate = (): JSX.Element => {
           onClose={() => setIsCreateModalOpen(false)}
         >
           <Box className={classes.modal}>
+            <h2>{jaTranslate('crud.createWithObjectName', 'model.vocabulary.modelName')}</h2>
             <form onSubmit={handleSubmit(onSubmit)} className={classes.formWrapper}>
               <div className={classes.form}>
                 <TextField
                   fullWidth
-                  label="vocabulary"
+                  label={jaTranslate('model.vocabulary.vocabularyEn')}
                   className={classes.form}
                   {...register("vocabularyEn", { required: true, minLength: 1, maxLength: 50 })}
                 />
@@ -163,7 +152,7 @@ const VocabularyCreate = (): JSX.Element => {
               <div className={classes.form}>
                 <TextField
                   fullWidth
-                  label="意味"
+                  label={jaTranslate('model.vocabulary.meaningJa')}
                   className={classes.form}
                   {...register("meaningJa", { required: true, minLength: 1, maxLength: 30 })}
                 />
@@ -181,7 +170,7 @@ const VocabularyCreate = (): JSX.Element => {
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     value={comprehensionValueLabel}
-                    label="理解度"
+                    label={jaTranslate('model.vocabulary.comprehensionRate')}
                     {...register("comprehensionRate")}
                     onChange={(e) =>
                       setComprehensionValueLabel(e.target.value)
@@ -209,7 +198,7 @@ const VocabularyCreate = (): JSX.Element => {
                       setIsAttachMemo(true)
                     }}
                   >
-                    メモを追加
+                    {jaTranslate('crud.add', 'model.vocabulary.memo')}
                   </Button>
                 </div>
               )}
@@ -226,7 +215,7 @@ const VocabularyCreate = (): JSX.Element => {
                         setValue('memo', '')
                       }}
                     >
-                      メモを取り消す
+                      {jaTranslate('crud.remove', 'model.vocabulary.memo')}
                     </Button>
                   </div>
                   <div className={classes.form}>
@@ -234,7 +223,7 @@ const VocabularyCreate = (): JSX.Element => {
                       multiline
                       fullWidth
                       rows={2}
-                      label="メモ"
+                      label={jaTranslate('model.vocabulary.memo')}
                       className={classes.form}
                       {...register("memo")}
                     />
