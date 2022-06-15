@@ -12,6 +12,7 @@ import API_PATH from 'path/API_PATH';
 import React, { useContext, useState } from 'react';
 import { toast } from 'react-toastify';
 import { Vocabulary } from 'type';
+import pronounceVocabularyEn from 'utilities/pronounceVocabularyEn'
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -183,6 +184,9 @@ const VocabularyListTable = (): JSX.Element => {
     ))
 
     if (record === undefined) return;
+
+    const vocabularyEn = record.vocabularyEn;
+    pronounceVocabularyEn(vocabularyEn);
 
     setSelectedRecord(record);
 
