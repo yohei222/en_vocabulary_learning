@@ -7,5 +7,7 @@ Rails.application.routes.draw do
     end
 
     resources :vocabularies, only: %i[index create update destroy]
+
+    delete "bulk/vocabularies" => "vocabularies#bulk_destroy"
   end
 end

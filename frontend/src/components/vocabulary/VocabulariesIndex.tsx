@@ -1,15 +1,19 @@
 import React from 'react'
 import { VocabularyContext, useVocabularyContext } from 'contexts/VocabularyContext';
 import VocabularyListTable from './VocabularyListTable';
-import VocabularyAddButton from './VocabularyAddButton';
+import VocabularyCreate from './VocabularyCreate';
+import VocabularyBulkDelete from './VocabularyBulkDelete';
+import VocabularySearchField from './VocabularySearchField';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(() =>
   createStyles({
     root: {
-      width: '90%',
+      width: '88%',
+      padding: '10px 20px',
       margin: '0 auto',
-      marginTop: '20px'
+      marginTop: '20px',
+      // backgroundColor: ''
     },
   })
 );
@@ -21,8 +25,12 @@ const VocabulariesIndex = (): JSX.Element => {
   return (
     <VocabularyContext.Provider value={ctx}>
       <div className={classes.root}>
+        {/* todo search formの実装 */}
+        <VocabularySearchField />
         {/* todo apiの実装→create button→modalの実装 */}
-        <VocabularyAddButton />
+        {/* 続けて登録するボタンも実装する */}
+        <VocabularyBulkDelete />
+        <VocabularyCreate />
         <VocabularyListTable />
       </div>
     </VocabularyContext.Provider>

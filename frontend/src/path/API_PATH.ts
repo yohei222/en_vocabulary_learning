@@ -6,8 +6,10 @@ export const API_PATH = {
     SESSIONS: "auth/sessions",
   },
   VOCABULARIES: {
-    INDEX: "vocabularies"
-  }
+    INDEX: "vocabularies",
+    CREATE: "vocabularies",
+    BULK_DELETE: "bulk/vocabularies"
+  },
 };
 
 export default API_PATH;
