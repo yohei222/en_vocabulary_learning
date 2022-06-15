@@ -13,7 +13,7 @@ class VocabularyFinder
 
   def base_query(search_text)
     vocabularies = @user.vocabularies
-    stripped_search_text = search_text.gsub(/　/," ").strip
+    stripped_search_text = (search_text || "").gsub(/　/," ").strip
 
     vocabularies = if stripped_search_text.present?
       vocabularies.where('vocabulary_en like ?', "%#{stripped_search_text}%")
