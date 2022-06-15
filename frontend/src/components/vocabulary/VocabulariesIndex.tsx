@@ -28,7 +28,8 @@ const VocabulariesIndex = (): JSX.Element => {
       <div className={classes.root}>
         <h1>{jaTranslate('appName')}</h1>
         <VocabularySearchField />
-        {/* todo デプロイする */}
+        {/* todo 発音ボタンをテーブルのカラムに追加する */}
+        {/* todo 理解度別にrowの背景を変えれる？試してみる */}
         {/* todo リファクタリング(jaTranslateにする, useMemoに変更する、など) */}
         <VocabularyBulkDelete />
         <VocabularyCreate />
