@@ -5,6 +5,7 @@ import VocabularyCreate from './VocabularyCreate';
 import VocabularyBulkDelete from './VocabularyBulkDelete';
 import VocabularySearchField from './VocabularySearchField';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
+import { jaTranslate } from "locales/i18n";
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -13,7 +14,6 @@ const useStyles = makeStyles(() =>
       padding: '10px 20px',
       margin: '0 auto',
       marginTop: '20px',
-      // backgroundColor: ''
     },
   })
 );
@@ -25,10 +25,13 @@ const VocabulariesIndex = (): JSX.Element => {
   return (
     <VocabularyContext.Provider value={ctx}>
       <div className={classes.root}>
-        {/* todo search formの実装 */}
+        <h1>{jaTranslate('appName')}</h1>
         <VocabularySearchField />
-        {/* todo apiの実装→create button→modalの実装 */}
-        {/* 続けて登録するボタンも実装する */}
+        {/* todo テーブルに作成日を追加する→ソートできるカラムvocabularyと理解度、作成日のみに変更する */}
+        {/* todo 新規作成後のローディングモーダルのタイミングを早くする */}
+        {/* todo 理解度をテーブル表示から更新できる機能の実装 */}
+        {/* todo 続けて登録するボタンの実装 */}
+        {/* todo 英単語の音声確認をする機能を追加 */}
         <VocabularyBulkDelete />
         <VocabularyCreate />
         <VocabularyListTable />
