@@ -57,8 +57,6 @@ export const deleteRequest = async(path: string, body: any) => {
   }
 }
 
-// todo 動作確認、paramsの設定方法は合っている？
-// todo paramsの渡し方を回収するところから！
 export const getRequest = async (path: string, params?: any) => {
 
   const config = {
@@ -67,12 +65,6 @@ export const getRequest = async (path: string, params?: any) => {
   };
 
   try {
-    // const response = await client.get(path,
-    //   Object.assign({
-    //     headers: tokenAuthHeaders(),
-    //     ignoreHeaders: true,
-    //   }, params));
-
     const response = await client.get(path, config)
 
     return {
