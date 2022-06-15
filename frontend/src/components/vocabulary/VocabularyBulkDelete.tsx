@@ -43,9 +43,10 @@ const useStyles = makeStyles(() =>
 const VocabularyBulkDelete = ():JSX.Element => {
   const classes = useStyles();
   const {
+    setIsLoading,
     setIsCreateModalOpen,
-    setIsVocabularyListChanged,
     checkedRecordIds,
+    renewRecords
   } = useContext(VocabularyContext);
 
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState<boolean>(false);
@@ -57,15 +58,19 @@ const VocabularyBulkDelete = ():JSX.Element => {
   , [checkedRecordIds])
 
   const handleBulkDeleteClick = async () => {
+    setIsLoading(true);
+    setIsConfirmModalOpen(false);
+
     const { status } = await deleteRequest("bulk/vocabularies", { ids: checkedRecordIds });
 
     if (status === 200) {
-      setIsVocabularyListChanged(true)
-      setIsConfirmModalOpen(false)
       notifyBulkDeleteSuccess();
+      renewRecords();
     } else {
+      setIsConfirmModalOpen(true);
       notifyBulkDeleteFailure();
     }
+    setIsLoading(false)
   }
 
   return (

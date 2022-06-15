@@ -15,8 +15,11 @@ type ContextType = {
   setCheckedRecordIds: (checkedRecordIds: GridSelectionModel) => void;
   isCreateModalOpen: boolean;
   setIsCreateModalOpen: (isCreateModalOpen: boolean) => void;
-  isVocabularyListChanged: boolean;
-  setIsVocabularyListChanged: (isLoading: boolean) => void;
+  selectedRecord: Vocabulary | undefined;
+  setSelectedRecord: (selectedRecord: Vocabulary | undefined) => void;
+  isUpdateModalOpen: boolean;
+  setIsUpdateModalOpen: (isCreateModalOpen: boolean) => void;
+  renewRecords: () => void;
 }
 
 const defaultContext: ContextType = {
@@ -30,8 +33,11 @@ const defaultContext: ContextType = {
   setCheckedRecordIds: () => null,
   isCreateModalOpen: false,
   setIsCreateModalOpen: () => null,
-  isVocabularyListChanged: false,
-  setIsVocabularyListChanged: () => null,
+  isUpdateModalOpen: false,
+  setIsUpdateModalOpen: () => null,
+  selectedRecord: undefined,
+  setSelectedRecord: () => null,
+  renewRecords: () => null,
 };
 
 export const VocabularyContext = createContext<ContextType>(defaultContext);
@@ -42,8 +48,16 @@ export const useVocabularyContext = (): ContextType => {
   const [params, setParams] = useState<any>({});
   const [checkedRecordIds, setCheckedRecordIds] = useState<GridSelectionModel>([]);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false);
+  const [selectedRecord, setSelectedRecord] = useState<Vocabulary | undefined>(undefined);
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState<boolean>(false);
 
-  const [isVocabularyListChanged, setIsVocabularyListChanged] = useState<boolean>(false);
+  const renewRecords = async () => {
+    setIsLoading(true);
+    const { responseData, status } = await getRequest(API_PATH.VOCABULARIES.INDEX, params);
+
+    if (status === 200) setVocabularyList(responseData);
+    setIsLoading(false);
+  }
 
   useEffect(() => {
     const asyncFetchVocabularyList = async () => {
@@ -52,10 +66,9 @@ export const useVocabularyContext = (): ContextType => {
 
       if (status === 200) setVocabularyList(responseData);
       setIsLoading(false);
-      setIsVocabularyListChanged(false)
     }
     asyncFetchVocabularyList()
-  }, [params, isVocabularyListChanged])
+  }, [params])
 
   return {
     isLoading,
@@ -68,7 +81,10 @@ export const useVocabularyContext = (): ContextType => {
     setCheckedRecordIds,
     isCreateModalOpen,
     setIsCreateModalOpen,
-    isVocabularyListChanged,
-    setIsVocabularyListChanged
+    selectedRecord,
+    setSelectedRecord,
+    isUpdateModalOpen,
+    setIsUpdateModalOpen,
+    renewRecords
   };
 }
