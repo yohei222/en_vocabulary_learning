@@ -38,6 +38,27 @@ export const postRequest = async (path: string, body: any) => {
   }
 }
 
+export const patchRequest = async (path: string, body: any) => {
+  try {
+    const response = await client.patch(path, body, {
+      headers: tokenAuthHeaders(),
+    });
+
+    return {
+      headers: response.headers,
+      responseData: response?.data?.data,
+      status: response.status,
+    };
+  } catch (error: any) {
+    return {
+      headers: undefined,
+      responseData: undefined,
+      status: error.response?.status,
+    };
+  }
+};
+
+
 export const deleteRequest = async(path: string, body: any) => {
   try {
     const response = await client.delete(path, {

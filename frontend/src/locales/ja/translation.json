@@ -24,10 +24,12 @@
   "crud": {
     "create": "新規作成",
     "createWithObjectName": "{{object}}を新規作成する",
-    "update": "編集",
-    "updateWithObjectName": "{{object}}を編集する",
+    "editWithObjectName": "{{object}}を変更する",
+    "update": "更新",
+    "updateWithObjectName": "{{object}}を更新する",
     "add": "{{object}}を追加する",
-    "remove": "{{object}}を取り消す"
+    "remove": "{{object}}を取り消す",
+    "updateWithSpecifiedValue": "「{{object}}」に更新する"
   },
   "actions": {
     "submit": "送信",
@@ -43,6 +45,7 @@
   "success": {
     "action": "{{object}}に成功しました",
     "create": "{{object}}の作成に成功しました",
+    "update": "{{object}}の更新に成功しました",
     "bulkDelete": "{{object}}の一括削除に成功しました"
   },
   "failure": {

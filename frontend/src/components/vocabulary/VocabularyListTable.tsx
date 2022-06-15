@@ -1,13 +1,17 @@
 import { createStyles, makeStyles } from '@material-ui/core/styles';
+import { Button } from '@mui/material';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import { DataGrid, GridCellParams, GridColDef } from '@mui/x-data-grid';
 import Loading from "components/Loading";
 import { VocabularyContext } from 'contexts/VocabularyContext';
-import React, { useContext, useState } from 'react';
-import { Vocabulary } from 'type';
+import { patchRequest } from 'lib/api/client';
 import { jaTranslate } from "locales/i18n";
-import moment from "moment"
+import moment from "moment";
+import API_PATH from 'path/API_PATH';
+import React, { useContext, useState } from 'react';
+import { toast } from 'react-toastify';
+import { Vocabulary } from 'type';
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -28,8 +32,31 @@ const useStyles = makeStyles(() =>
       p: 4,
       overflowY: 'scroll'
     },
+    smallModal: {
+      position: 'absolute' as 'absolute',
+      top: '40%',
+      left: '50%',
+      height: '30%',
+      padding: '20px 40px',
+      transform: 'translate(-50%, -50%)',
+      width: '20%',
+      backgroundColor: 'white',
+      boxShadow: '24',
+      p: 4,
+      overflowY: 'scroll'
+    },
     span: {
       fontWeight: 'bold'
+    },
+    buttonContainer : {
+      width: '300px',
+      marginTop: '30px'
+    },
+    button: {
+      width: '80%'
+    },
+    fontBold: {
+      fontWeight: "bold",
     }
   })
 );
@@ -38,11 +65,15 @@ const VocabularyListTable = (): JSX.Element => {
   const classes = useStyles();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [selectedRecord, setSelectedRecord] = useState<Vocabulary | undefined>(undefined);
+  const [isComprehensionRateChangeModalOpen, setIsComprehensionRateChangeModalOpen] = useState<boolean>(false);
+  const notifyUpdateSuccess = () => toast(jaTranslate('success.update', 'model.vocabulary.modelName'));
+  const notifyUpdateFailure = () => toast(jaTranslate('failure.update', 'model.vocabulary.modelName'));
 
   const {
     isLoading,
     vocabularyList,
-    setCheckedRecordIds
+    setCheckedRecordIds,
+    setIsVocabularyListChanged
   } = useContext(VocabularyContext);
 
   if (isLoading) {
@@ -65,6 +96,7 @@ const VocabularyListTable = (): JSX.Element => {
       field: 'comprehension_rate',
       headerName: jaTranslate('model.vocabulary.comprehensionRate'),
       width: 110,
+      editable: true
     },
     {
       field: 'createdAt',
@@ -92,19 +124,49 @@ const VocabularyListTable = (): JSX.Element => {
     }
   })
 
+  const onComprehensionRateChangeClick = async (record: Vocabulary, clickedRate: string) => {
+    const newRecord = record;
+    newRecord.vocabularyDetail.comprehensionRate = clickedRate;
+
+    const { status } = await patchRequest(
+      `${API_PATH.VOCABULARIES.UPDATE}/${record.id}`, newRecord
+    );
+
+    if (status === 200) {
+      setIsVocabularyListChanged(true)
+      setSelectedRecord(undefined);
+      setIsComprehensionRateChangeModalOpen(false)
+      notifyUpdateSuccess();
+    } else {
+      notifyUpdateFailure();
+    }
+  }
+
   const onCellClick = (params: GridCellParams) => {
     const checkedId = params.row.id
-    if (params.field === '__check__') return;
+    const checkedField = params.field;
+
+    if (checkedField === '__check__') return;
 
     const record = vocabularyList.find((vocabulary) => (
       vocabulary.id === checkedId
     ))
+
+    if (record === undefined) return;
+
     setSelectedRecord(record);
+
+    if (checkedField === "comprehension_rate") {
+      setIsComprehensionRateChangeModalOpen(true);
+      return;
+    }
+
     setIsModalOpen(true);
   };
 
   return (
     <>
+      {/* todo keyのwarningを修正する */}
       <div className={classes.root}>
         <DataGrid
           initialState={{
@@ -129,6 +191,63 @@ const VocabularyListTable = (): JSX.Element => {
           }
         />
       </div>
+
+      <Modal
+        open={isComprehensionRateChangeModalOpen}
+        onClose={() => setIsComprehensionRateChangeModalOpen(false)}
+      >
+        <Box className={classes.smallModal}>
+          {(selectedRecord) && (
+            <>
+              <h3>{jaTranslate('crud.editWithObjectName', '理解度')}</h3>
+              <p>現在の理解度：
+                <span className={classes.fontBold}>
+                  {jaTranslate(`model.vocabulary.comprehensionRateList.${selectedRecord.vocabularyDetail.comprehensionRate}`)}
+                </span>
+              </p>
+
+              {(selectedRecord.vocabularyDetail.comprehensionRate !== "high") && (
+                <div className={classes.buttonContainer}>
+                  <Button
+                    variant="contained"
+                    color="info"
+                    className={classes.button}
+                    onClick={() => { onComprehensionRateChangeClick(selectedRecord, "high")}}
+                  >
+                    {jaTranslate('crud.updateWithSpecifiedValue', 'model.vocabulary.comprehensionRateList.high')}
+                  </Button>
+                </div>
+              )}
+
+              {(selectedRecord.vocabularyDetail.comprehensionRate !== "middle") && (
+                <div className={classes.buttonContainer}>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    className={classes.button}
+                    onClick={() => { onComprehensionRateChangeClick(selectedRecord, "middle")}}
+                  >
+                    {jaTranslate('crud.updateWithSpecifiedValue', 'model.vocabulary.comprehensionRateList.middle')}
+                  </Button>
+                </div>
+              )}
+
+              {(selectedRecord.vocabularyDetail.comprehensionRate !== "low") && (
+                <div className={classes.buttonContainer}>
+                  <Button
+                    variant="contained"
+                    color="error"
+                    className={classes.button}
+                    onClick={() => { onComprehensionRateChangeClick(selectedRecord, "low")}}
+                  >
+                    {jaTranslate('crud.updateWithSpecifiedValue', 'model.vocabulary.comprehensionRateList.low')}
+                  </Button>
+                </div>
+              )}
+            </>
+          )}
+        </Box>
+      </Modal>
 
       <Modal
         open={isModalOpen}
@@ -161,6 +280,19 @@ const VocabularyListTable = (): JSX.Element => {
                   )
                 })
               )}
+              <div className={classes.buttonContainer}>
+                <Button
+                  variant="contained"
+                  color="info"
+                  className={classes.button}
+                  onClick={() => {
+                    setIsModalOpen(false)
+                    setIsComprehensionRateChangeModalOpen(true)
+                  }}
+                >
+                  理解度を変更する
+                </Button>
+              </div>
             </>
           )}
           {/* todo 編集できるモーダルを作成する？ */}
