@@ -122,6 +122,11 @@ const VocabularyListTable = (): JSX.Element => {
       width: 250,
     },
     {
+      field: 'updatedAt',
+      headerName: jaTranslate('model.vocabulary.updatedAt'),
+      width: 250,
+    },
+    {
       field: 'memo',
       headerName: jaTranslate('model.vocabulary.memo'),
       width: 500,
@@ -130,7 +135,8 @@ const VocabularyListTable = (): JSX.Element => {
   ];
 
   const rows = vocabularyList.map((vocabulary) => {
-    const jaDateTime = moment(vocabulary.createdAt).format(jaTranslate('format.datetime.default'))
+    const jaCreatedAt = moment(vocabulary.createdAt).format(jaTranslate('format.datetime.default'))
+    const jaUpdatedAt = moment(vocabulary.updatedAt).format(jaTranslate('format.datetime.default'))
 
     return {
       id: vocabulary.id,
@@ -138,7 +144,8 @@ const VocabularyListTable = (): JSX.Element => {
       meaning_ja: vocabulary.meaningJa,
       comprehension_rate: jaTranslate(`model.vocabulary.comprehensionRateList.${vocabulary.vocabularyDetail.comprehensionRate}`),
       memo: vocabulary.vocabularyDetail.memo,
-      createdAt: jaDateTime,
+      createdAt: jaCreatedAt,
+      updatedAt: jaUpdatedAt,
     }
   })
 

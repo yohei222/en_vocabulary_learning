@@ -18,7 +18,8 @@
         "low": "要復習"
       },
       "memo": "メモ",
-      "createdAt": "作成日時"
+      "createdAt": "作成日時",
+      "updatedAt": "更新日時"
     }
   },
   "crud": {
