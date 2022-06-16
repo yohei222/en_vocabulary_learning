@@ -17,7 +17,7 @@ https://en-vocabulary-learning-api.herokuapp.com
 ### メイン機能(英単語関連)
 - 検索機能
 - 登録・更新機能
-  - 英英辞書の外部API( https://www.wordsapi.com )と連携し、単語それぞれの定義と用法を複数取得し、登録します。
+  - 英英辞書の外部API([WordsAPI](https://www.wordsapi.com))と連携し、単語それぞれの定義と用法を複数取得し、登録します。
 - 削除・一括削除機能
 - 発音機能
 - 単語の理解度のみを更新できる機能
