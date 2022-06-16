@@ -21,12 +21,12 @@
 ### path
 - フロントエンドのパスや、バックエンドへのアクセスするパスを管理しています。
 
-## routes
+### routes
 - アプリのルーティングを管理しています。
   - `react-router-dom`を用いて実装しています。
   - ログイン時とログインしていない時に応じてページへのアクセス制御を行うPrivateRouteを定義しています。
 
-## utilities
+### utilities
 - 複数の箇所から呼び出すメソッドを管理しています。
 
 ## 使用しているライブラリ例
@@ -36,13 +36,13 @@
 ### toast
 - ログイン時やレコードの変更時にフラッシュメッセージを表示するために使用しています。
 
-### `@material-ui/core/styles`
+### @material-ui/core/styles
 - スタイリングのために使用しています。
 
-### `@mui/material/Modal`
+### @mui/material/Modal
 - モーダルは@material ui@を使用して実装しています。
 
-### `react-hook-form`, `yup`
+### react-hook-form, yup
 - それぞれフォームの入力値の管理やバリデーションで利用しています。
 
 ### moment.js
