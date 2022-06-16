@@ -38,7 +38,7 @@ const useStyles = makeStyles(() =>
       height: '200px',
       padding: '20px 40px',
       transform: 'translate(-50%, -50%)',
-      width: '20%',
+      width: '240px',
       backgroundColor: 'white',
       boxShadow: '24',
       p: 4,
@@ -55,7 +55,6 @@ const useStyles = makeStyles(() =>
       marginRight: "20px"
     },
     warningText: {
-      textAlign: "center",
       fontWeight: "bold"
     }
   })
