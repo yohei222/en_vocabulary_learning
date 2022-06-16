@@ -13,6 +13,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { SignInParams } from "type";
 import setCookies from "utilities/cookies/setCookies";
 import * as yup from "yup";
+import PublicTestAccount from './PublicTestAccount';
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -123,6 +124,8 @@ const SignIn = (): JSX.Element => {
         onClick={() => navigate('/sign_up')}>
         {jaTranslate('actions.signUp')}
       </Button>
+
+      <PublicTestAccount />
     </Container >
   )
 };
