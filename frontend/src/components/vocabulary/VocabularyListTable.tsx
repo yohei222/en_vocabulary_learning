@@ -13,11 +13,12 @@ import React, { useContext, useState } from 'react';
 import { toast } from 'react-toastify';
 import { Vocabulary } from 'type';
 import pronounceVocabularyEn from 'utilities/pronounceVocabularyEn'
+import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 
 const useStyles = makeStyles(() =>
   createStyles({
     root: {
-      height: 500,
+      height: 550,
       marginTop: '20px'
     },
     modal: {
@@ -73,6 +74,9 @@ const useStyles = makeStyles(() =>
     },
     marginRight: {
       marginRight: "20px"
+    },
+    onCursor: {
+      cursor: "pointer"
     }
   })
 );
@@ -99,7 +103,24 @@ const VocabularyListTable = (): JSX.Element => {
     return <Loading />
   }
 
+  const PronounceCell = (params: any) => {
+    return (
+      <span
+        className={classes.onCursor}
+      >
+        <VolumeUpIcon />
+      </span>
+    )
+  }
+
   const columns: GridColDef[] = [
+    {
+      field: 'pronounce',
+      headerName: "発音",
+      renderCell: PronounceCell,
+      width: 50,
+      sortable: false
+    },
     {
       field: 'vocabulary_en',
       headerName: jaTranslate('model.vocabulary.vocabularyEn'),
@@ -177,17 +198,19 @@ const VocabularyListTable = (): JSX.Element => {
     const checkedId = params.row.id
     const checkedField = params.field;
 
-    if (checkedField === '__check__') return;
-
+    const nonModalOpenColumns = ['__check__', 'pronounce']
     const record = vocabularyList.find((vocabulary) => (
       vocabulary.id === checkedId
     ))
 
     if (record === undefined) return;
 
-    const vocabularyEn = record.vocabularyEn;
-    pronounceVocabularyEn(vocabularyEn);
+    if (checkedField === 'pronounce') {
+      const vocabularyEn = record.vocabularyEn;
+      pronounceVocabularyEn(vocabularyEn);
+    }
 
+    if (nonModalOpenColumns.includes(checkedField)) return;
     setSelectedRecord(record);
 
     if (checkedField === "comprehension_rate") {
@@ -200,7 +223,6 @@ const VocabularyListTable = (): JSX.Element => {
 
   return (
     <>
-      {/* todo keyのwarningを修正する */}
       <div className={classes.root}>
         <DataGrid
           initialState={{
@@ -251,7 +273,7 @@ const VocabularyListTable = (): JSX.Element => {
                     variant="contained"
                     color="info"
                     className={classes.button}
-                    onClick={() => { onComprehensionRateChangeClick(selectedRecord, "high")}}
+                    onClick={() => { onComprehensionRateChangeClick(selectedRecord, "high") }}
                   >
                     {jaTranslate('crud.updateWithSpecifiedValue', 'model.vocabulary.comprehensionRateList.high')}
                   </Button>
@@ -264,7 +286,7 @@ const VocabularyListTable = (): JSX.Element => {
                     variant="contained"
                     color="secondary"
                     className={classes.button}
-                    onClick={() => { onComprehensionRateChangeClick(selectedRecord, "middle")}}
+                    onClick={() => { onComprehensionRateChangeClick(selectedRecord, "middle") }}
                   >
                     {jaTranslate('crud.updateWithSpecifiedValue', 'model.vocabulary.comprehensionRateList.middle')}
                   </Button>
@@ -277,7 +299,7 @@ const VocabularyListTable = (): JSX.Element => {
                     variant="contained"
                     color="error"
                     className={classes.button}
-                    onClick={() => { onComprehensionRateChangeClick(selectedRecord, "low")}}
+                    onClick={() => { onComprehensionRateChangeClick(selectedRecord, "low") }}
                   >
                     {jaTranslate('crud.updateWithSpecifiedValue', 'model.vocabulary.comprehensionRateList.low')}
                   </Button>
