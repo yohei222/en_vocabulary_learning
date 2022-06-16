@@ -32,6 +32,7 @@ https://en-vocabulary-learning-api.herokuapp.com
 
 ## デプロイ
 - デプロイはherokuを用いて行っています。
+- DBは開発・本番環境ともにMySQLを使用しています。
 
 ## ドメインモデル
 - `rails-erd`というgemを用いてこちらの図を作成しました。
