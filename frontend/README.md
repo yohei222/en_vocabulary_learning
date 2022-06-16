@@ -40,7 +40,7 @@
 - スタイリングのために使用しています。
 
 ### @mui/material/Modal
-- モーダルは@material ui@を使用して実装しています。
+- モーダルはmaterial uiを使用して実装しています。
 
 ### react-hook-form, yup
 - それぞれフォームの入力値の管理やバリデーションで利用しています。
