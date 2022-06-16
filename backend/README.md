@@ -1,24 +1,27 @@
-# README
+# 英単語学習アプリ バックエンド
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## APIエンドポイント(バックエンドURL)
+https://en-vocabulary-learning-api.herokuapp.com
 
-Things you may want to cover:
+## ディレクトリ設計
+### controller
+- ルーティングファイル(routes.rb)からリクエストを受け取り、レスポンスを返します。
 
-* Ruby version
+### finder
+- 検索を責務としています。
+  - controllerから検索パラメーターを受け取り、検索結果を返します。
 
-* System dependencies
+### factory
+- レコードの生成をします。
+  - 生成までが責務であり、永続化はservice層で行います。
 
-* Configuration
+### services
+- factoryによって生成されたレコードを永続化します。
 
-* Database creation
+### specification
+- ドメイン層に属するディレクトリです。
+- ビジネス要件と照らし合わせ、要件を満たしているかを判定します。
 
-* Database initialization
+## ドメインモデル
+![ドメインモデル](https://user-images.githubusercontent.com/56663358/174021777-36e6dc60-82c1-400f-b6db-737e22533bcc.png)
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
