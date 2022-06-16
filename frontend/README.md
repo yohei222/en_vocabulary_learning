@@ -3,7 +3,7 @@
 ### アプリURL(フロントエンドURL)
 - https://en-vocabulary-learning.netlify.app
 
-## ディレクトリ設計
+## ディレクトリ設計(src配下)
 ### components
 - 画面に表示するコンポーネントをこのディレクトリ配下に配置します。
 
