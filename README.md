@@ -2,10 +2,10 @@
 英単語学習を効率化できるアプリです。
 
 ## URL
-### フロントエンドURL
+### アプリURL(フロントエンドURL)
 https://en-vocabulary-learning.netlify.app
 
-### バックエンドURL
+### APIエンドポイント(バックエンドURL)
 https://en-vocabulary-learning-api.herokuapp.com
 
 ## 機能一覧
