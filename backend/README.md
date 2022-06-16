@@ -22,6 +22,14 @@ https://en-vocabulary-learning-api.herokuapp.com
 - ドメイン層に属するディレクトリです。
 - ビジネス要件と照らし合わせ、要件を満たしているかを判定します。
 
+## 認証関連
+- トークン認証関連のgemである`"devise_token_auth"`を用いて実装しました。
+- サインイン・ログイン時に返されるレスポンスのheaderに含まれる`client, access-token, uid`をフロントエンドのcookieにて保持する方法でログインを実装しました。
+
+## デプロイ
+- デプロイはherokuを用いて行っています。
+
 ## ドメインモデル
+- `rails-erd`というgemを用いてこちらの図を作成しました。
 ![ドメインモデル](https://user-images.githubusercontent.com/56663358/174021777-36e6dc60-82c1-400f-b6db-737e22533bcc.png)
 
