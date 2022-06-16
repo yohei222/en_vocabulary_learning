@@ -9,7 +9,6 @@ import { useCallback, useContext, useEffect } from "react";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
 
-
 const AllRoutes = (): JSX.Element => {
   const { isSignedIn, setIsSignedIn, setIsLoading, setCurrentUser } = useContext(AuthContext);
 
