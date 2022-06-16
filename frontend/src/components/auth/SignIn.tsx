@@ -40,10 +40,10 @@ const useStyles = makeStyles(() =>
 );
 
 const schema = yup.object({
-  email: yup.string().min(6).required(
+  email: yup.string().email().required(
     jaTranslate('errors.required', 'model.user.email')
   ),
-  password: yup.string().min(6).required(
+  password: yup.string().required(
     jaTranslate('errors.required', 'model.user.password')
   ),
 }).required();
