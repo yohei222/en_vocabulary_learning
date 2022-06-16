@@ -1,4 +1,4 @@
-# en_vocabulary_learning
+# 英単語学習アプリ
 英単語学習を効率化できるアプリです。
 
 ## URL
