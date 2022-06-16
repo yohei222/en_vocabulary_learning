@@ -83,9 +83,9 @@ const useStyles = makeStyles(() =>
     englishFont: {
       fontStyle: "italic"
     },
-    usageContainer: {
+    marginBottom: {
       marginBottom: "10px",
-    }
+    },
   })
 );
 
@@ -326,9 +326,11 @@ const VocabularyListTable = (): JSX.Element => {
           {(selectedRecord) && (
             <>
               <div className={classes.flex}>
-                <h2 id="parent-modal-title">
-                  {selectedRecord.vocabularyEn} : {selectedRecord.meaningJa}
-                </h2>
+                <div className={classes.flex}>
+                  <h2 id="parent-modal-title">
+                    {selectedRecord.vocabularyEn} : {selectedRecord.meaningJa}
+                  </h2>
+                </div>
                 <p className={classes.alignRight}>理解度:
                   <span className={classes.fontBold}>
                     {jaTranslate(`model.vocabulary.comprehensionRateList.${selectedRecord.vocabularyDetail.comprehensionRate}`)}
@@ -347,10 +349,10 @@ const VocabularyListTable = (): JSX.Element => {
                     {jaTranslate("crud.editWithObjectName", "model.vocabulary.comprehensionRate")}
                   </Button>
                 </span>
-                <span>
+                <span className={classes.marginRight}>
                   <Button
                     variant="contained"
-                    color="warning"
+                    color="success"
                     className={classes.modalButton}
                     onClick={() => {
                       setIsModalOpen(false)
@@ -360,14 +362,40 @@ const VocabularyListTable = (): JSX.Element => {
                     {jaTranslate("crud.editWithObjectName", "model.vocabulary.modelName")}
                   </Button>
                 </span>
+                <span>
+                  <Button
+                    variant="contained"
+                    color="warning"
+                    className={classes.modalButton}
+                    onClick={() => {
+                      pronounceVocabularyEn(selectedRecord.vocabularyEn);
+                    }}
+                  >
+                    <VolumeUpIcon />
+                  </Button>
+                </span>
               </div>
+              <Divider />
+
+              {(selectedRecord.vocabularyDetail.memo !== "") && (
+                <>
+                  <div className={classes.marginBottom}>
+                    <p className={classes.bold}>
+                      {jaTranslate("model.vocabulary.memo")}
+                    </p>
+                    <p id="parent-modal-description">
+                      <p className={classes.englishFont}>{selectedRecord.vocabularyDetail.memo}</p>
+                    </p>
+                  </div>
+                </>
+              )}
               <Divider />
 
               {(selectedRecord.vocabularyUsages) && (
                 (selectedRecord.vocabularyUsages).map((usage, i) => {
                   return (
                     <>
-                      <div className={classes.usageContainer}>
+                      <div className={classes.marginBottom}>
                         <p className={classes.bold}>{jaTranslate("model.vocabulary.definition")}{i + 1}</p>
                         <span className={classes.bold}>
                           <span className={classes.englishFont}>{usage.definition}</span>
@@ -390,14 +418,6 @@ const VocabularyListTable = (): JSX.Element => {
                     </>
                   )
                 })
-              )}
-              {(selectedRecord.vocabularyDetail.memo !== "") && (
-                <>
-                  <p className={classes.bold}>
-                    {jaTranslate("model.vocabulary.memo")}
-                  </p>
-                  {selectedRecord.vocabularyDetail.memo}
-                </>
               )}
             </>
           )}

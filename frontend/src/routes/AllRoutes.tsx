@@ -29,7 +29,7 @@ const AllRoutes = (): JSX.Element => {
 
         if (AUTH_RELATED_PATH.includes(path)) navigate("/");
       } else {
-        navigate((path === PATH.SIGN_IN) ? PATH.SIGN_IN : PATH.SIGN_UP);
+        navigate((path === PATH.SIGN_UP) ? PATH.SIGN_UP : PATH.SIGN_IN);
       }
     } catch (err) {
       navigate(PATH.SIGN_IN);

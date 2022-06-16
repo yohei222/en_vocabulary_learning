@@ -59,7 +59,7 @@ export const patchRequest = async (path: string, body: any) => {
 };
 
 
-export const deleteRequest = async(path: string, body: any) => {
+export const deleteRequest = async(path: string, body?: any) => {
   try {
     const response = await client.delete(path, {
       headers: tokenAuthHeaders(),
