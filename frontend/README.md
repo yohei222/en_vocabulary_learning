@@ -56,3 +56,6 @@
 
 ### @mui/icons-material
 - アイコンはmaterial uiのアイコンを使用しています。
+
+## デプロイ
+netlifyを使用しています。
