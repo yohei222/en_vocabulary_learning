@@ -3,11 +3,11 @@
 
 ## URL, README一覧
 ### アプリURL(フロントエンドURL)
-- https://en-vocabulary-learning.netlify.app
+- URL: https://en-vocabulary-learning.netlify.app
 - [フロントエンドREADME](https://github.com/yohei222/en_vocabulary_learning/blob/master/frontend/README.md)
 
 ### APIエンドポイント(バックエンドURL)
-- https://en-vocabulary-learning-api.herokuapp.com
+- URL: https://en-vocabulary-learning-api.herokuapp.com
 - [バックエンドREADME](https://github.com/yohei222/en_vocabulary_learning/blob/master/backend/README.md)
 
 ## 機能一覧
