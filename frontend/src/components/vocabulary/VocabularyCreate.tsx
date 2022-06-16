@@ -169,7 +169,7 @@ const VocabularyCreate = (): JSX.Element => {
 
               <div className={classes.form}>
                 <FormControl fullWidth>
-                  <InputLabel id="demo-simple-select-label">理解度</InputLabel>
+                  <InputLabel id="demo-simple-select-label">{jaTranslate('model.vocabulary.comprehensionRate')}</InputLabel>
                   <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"

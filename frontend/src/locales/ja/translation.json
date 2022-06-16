@@ -38,9 +38,11 @@
     "submit": "送信",
     "signIn": "ログイン",
     "signUp": "サインアップ",
+    "logOut": "ログアウト",
     "confirm": {
       "delete": "本当に削除してもよろしいですか？"
-    }
+    },
+    "back": "戻る"
   },
   "errors": {
     "required": "{{object}}は必須項目です"
