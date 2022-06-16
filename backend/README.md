@@ -18,6 +18,10 @@ https://en-vocabulary-learning-api.herokuapp.com
 ### services
 - factoryによって生成されたレコードを永続化します。
 
+### serializer
+- フロントエンドに返却するjsonの形に整形します。
+- gemの`active_model_serializers`を用いて実装しています。
+
 ### specification
 - ドメイン層に属するディレクトリです。
 - ビジネス要件と照らし合わせ、要件を満たしているかを判定します。
@@ -31,5 +35,6 @@ https://en-vocabulary-learning-api.herokuapp.com
 
 ## ドメインモデル
 - `rails-erd`というgemを用いてこちらの図を作成しました。
+
 ![ドメインモデル](https://user-images.githubusercontent.com/56663358/174021777-36e6dc60-82c1-400f-b6db-737e22533bcc.png)
 
