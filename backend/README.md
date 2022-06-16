@@ -3,7 +3,7 @@
 ## APIエンドポイント(バックエンドURL)
 - https://en-vocabulary-learning-api.herokuapp.com
 
-## ディレクトリ設計
+## ディレクトリ設計(app配下)
 ### controller
 - ルーティングファイル(routes.rb)からリクエストを受け取り、レスポンスを返します。
 
