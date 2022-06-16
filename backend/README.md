@@ -1,7 +1,7 @@
 # 英単語学習アプリ バックエンド
 
 ## APIエンドポイント(バックエンドURL)
-https://en-vocabulary-learning-api.herokuapp.com
+- https://en-vocabulary-learning-api.herokuapp.com
 
 ## ディレクトリ設計
 ### controller
