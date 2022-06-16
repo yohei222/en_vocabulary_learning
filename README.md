@@ -21,3 +21,12 @@ https://en-vocabulary-learning-api.herokuapp.com
 - 削除・一括削除機能
 - 発音機能
 - 単語の理解度のみを更新できる機能
+- ソート機能
+  - 以下の条件でソートが可能です
+    - 理解度
+    - アルファベット
+    - 作成日
+    - 更新日時
+
+## サンプル動画
+https://user-images.githubusercontent.com/56663358/174016767-f7c95fc8-7454-4429-813b-54c0ee56db89.mov
