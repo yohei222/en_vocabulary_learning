@@ -14,6 +14,7 @@ import { toast } from 'react-toastify';
 import { Vocabulary } from 'type';
 import pronounceVocabularyEn from 'utilities/pronounceVocabularyEn'
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
+import Divider from '@mui/material/Divider';
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -47,8 +48,9 @@ const useStyles = makeStyles(() =>
       p: 4,
       overflowY: 'scroll'
     },
-    span: {
-      fontWeight: 'bold'
+    bold: {
+      fontWeight: 'bold',
+      marginRight: "5px"
     },
     buttonContainer : {
       width: '300px',
@@ -77,6 +79,12 @@ const useStyles = makeStyles(() =>
     },
     onCursor: {
       cursor: "pointer"
+    },
+    englishFont: {
+      fontStyle: "italic"
+    },
+    usageContainer: {
+      marginBottom: "10px",
     }
   })
 );
@@ -336,7 +344,7 @@ const VocabularyListTable = (): JSX.Element => {
                       setIsComprehensionRateChangeModalOpen(true)
                     }}
                   >
-                    理解度を変更する
+                    {jaTranslate("crud.editWithObjectName", "model.vocabulary.comprehensionRate")}
                   </Button>
                 </span>
                 <span>
@@ -349,34 +357,45 @@ const VocabularyListTable = (): JSX.Element => {
                       setIsUpdateModalOpen(true)
                     }}
                   >
-                    英単語を編集する
+                    {jaTranslate("crud.editWithObjectName", "model.vocabulary.modelName")}
                   </Button>
                 </span>
               </div>
+              <Divider />
+
               {(selectedRecord.vocabularyUsages) && (
                 (selectedRecord.vocabularyUsages).map((usage, i) => {
                   return (
                     <>
-                      <h3 id="parent-modal-title">definition{i+1}</h3>
-                      <span className={classes.span}>{usage.definition}</span>
-                      <br />
+                      <div className={classes.usageContainer}>
+                        <p className={classes.bold}>{jaTranslate("model.vocabulary.definition")}{i + 1}</p>
+                        <span className={classes.bold}>
+                          <span className={classes.englishFont}>{usage.definition}</span>
+                        </span>
 
-                      {(usage.examples) && (
-                        (usage.examples.split(", ")).map((example: string, j: number) => {
-                          return (
-                            <p id="parent-modal-description">
-                              <span className={classes.span}>example{j + 1}:</span> {example}
-                            </p>
-                          )
-                        })
-                      )}
+                        {(usage.examples) && (
+                          (usage.examples.split(", ")).map((example: string, j: number) => {
+                            return (
+                              <p id="parent-modal-description">
+                                <span className={classes.bold}>
+                                  {jaTranslate("model.vocabulary.example")}{j + 1}:
+                                </span>
+                                <span className={classes.englishFont}>{example}</span>
+                              </p>
+                            )
+                          })
+                        )}
+                      </div>
+                      <Divider />
                     </>
                   )
                 })
               )}
               {(selectedRecord.vocabularyDetail.memo !== "") && (
                 <>
-                  <h3>メモ</h3>
+                  <p className={classes.bold}>
+                    {jaTranslate("model.vocabulary.memo")}
+                  </p>
                   {selectedRecord.vocabularyDetail.memo}
                 </>
               )}
