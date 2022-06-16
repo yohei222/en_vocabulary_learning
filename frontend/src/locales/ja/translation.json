@@ -18,6 +18,8 @@
         "low": "要復習"
       },
       "memo": "メモ",
+      "definition": "定義",
+      "example": "使用例",
       "createdAt": "作成日時",
       "updatedAt": "更新日時"
     }
@@ -25,7 +27,7 @@
   "crud": {
     "create": "新規作成",
     "createWithObjectName": "{{object}}を新規作成する",
-    "editWithObjectName": "{{object}}を変更する",
+    "editWithObjectName": "{{object}}を編集する",
     "update": "更新",
     "updateWithObjectName": "{{object}}を更新する",
     "add": "{{object}}を追加する",
