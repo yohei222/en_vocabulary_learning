@@ -1,7 +1,7 @@
 # 英単語学習アプリ
 英単語学習を効率化できるアプリです。
 
-## URL, README
+## URL, README一覧
 ### アプリURL(フロントエンドURL)
 - https://en-vocabulary-learning.netlify.app
 - README: ([フロントエンドREADME](https://github.com/yohei222/en_vocabulary_learning/blob/master/fronted/README.md))
