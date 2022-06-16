@@ -117,96 +117,98 @@ const VocabularyUpdate = (): JSX.Element => {
     setIsLoading(false);
   };
 
+  if ((!isUpdateModalOpen) || (!selectedRecord)) {
+    return <></>
+  };
+
   return (
     <>
-      {(isUpdateModalOpen && selectedRecord) && (
-        <Modal
-          open={isUpdateModalOpen}
-          onClose={() => setIsUpdateModalOpen(false)}
-        >
-          <Box className={classes.modal}>
-            <h2>英単語を編集する</h2>
-            <form onSubmit={handleSubmit(onSubmit)} className={classes.formWrapper}>
-              <div className={classes.form}>
-                <TextField
-                  fullWidth
-                  label={jaTranslate('model.vocabulary.vocabularyEn')}
-                  className={classes.form}
-                  defaultValue={selectedRecord?.vocabularyEn}
-                  {...register("vocabularyEn", { required: true, minLength: 1, maxLength: 50 })}
-                />
-                {errors.vocabularyEn && (
-                  <span className={classes.errorMessage} color="danger">
-                    * {errors.vocabularyEn.message}
-                  </span>
-                )}
-              </div>
+      <Modal
+        open={isUpdateModalOpen}
+        onClose={() => setIsUpdateModalOpen(false)}
+      >
+        <Box className={classes.modal}>
+          <h2>英単語を編集する</h2>
+          <form onSubmit={handleSubmit(onSubmit)} className={classes.formWrapper}>
+            <div className={classes.form}>
+              <TextField
+                fullWidth
+                label={jaTranslate('model.vocabulary.vocabularyEn')}
+                className={classes.form}
+                defaultValue={selectedRecord?.vocabularyEn}
+                {...register("vocabularyEn", { required: true, minLength: 1, maxLength: 50 })}
+              />
+              {errors.vocabularyEn && (
+                <span className={classes.errorMessage} color="danger">
+                  * {errors.vocabularyEn.message}
+                </span>
+              )}
+            </div>
 
-              <div className={classes.form}>
-                <TextField
-                  fullWidth
-                  label={jaTranslate('model.vocabulary.meaningJa')}
-                  className={classes.form}
-                  defaultValue={selectedRecord?.meaningJa}
-                  {...register("meaningJa", { required: true, minLength: 1, maxLength: 30 })}
-                />
-                {errors.meaningJa && (
-                  <span className={classes.errorMessage} color="danger">
-                    * {errors.meaningJa.message}
-                  </span>
-                )}
-              </div>
+            <div className={classes.form}>
+              <TextField
+                fullWidth
+                label={jaTranslate('model.vocabulary.meaningJa')}
+                className={classes.form}
+                defaultValue={selectedRecord?.meaningJa}
+                {...register("meaningJa", { required: true, minLength: 1, maxLength: 30 })}
+              />
+              {errors.meaningJa && (
+                <span className={classes.errorMessage} color="danger">
+                  * {errors.meaningJa.message}
+                </span>
+              )}
+            </div>
 
-              <div className={classes.form}>
-                <FormControl fullWidth>
-                  <InputLabel id="demo-simple-select-label">理解度</InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={comprehensionValueLabel}
-                    defaultValue={selectedRecord?.vocabularyDetail.comprehensionRate}
-                    label={jaTranslate('model.vocabulary.comprehensionRate')}
-                    {...register("comprehensionRate")}
-                    onChange={(e) =>
-                      setComprehensionValueLabel(e.target.value)
-                    }
-                  >
-                    <MenuItem value={"high"}>高い</MenuItem>
-                    <MenuItem value={"middle"}>まあまあ</MenuItem>
-                    <MenuItem value={"low"}>要復習</MenuItem>
-                  </Select>
-                </FormControl>
-                {errors.comprehensionRate && (
-                  <span className={classes.errorMessage} color="danger">
-                    * {errors.comprehensionRate.message}
-                  </span>
-                )}
-              </div>
+            <div className={classes.form}>
+              <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">理解度</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={comprehensionValueLabel}
+                  defaultValue={selectedRecord?.vocabularyDetail.comprehensionRate}
+                  label={jaTranslate('model.vocabulary.comprehensionRate')}
+                  {...register("comprehensionRate")}
+                  onChange={(e) =>
+                    setComprehensionValueLabel(e.target.value)
+                  }
+                >
+                  <MenuItem value={"high"}>高い</MenuItem>
+                  <MenuItem value={"middle"}>まあまあ</MenuItem>
+                  <MenuItem value={"low"}>要復習</MenuItem>
+                </Select>
+              </FormControl>
+              {errors.comprehensionRate && (
+                <span className={classes.errorMessage} color="danger">
+                  * {errors.comprehensionRate.message}
+                </span>
+              )}
+            </div>
 
-              <div className={classes.form}>
-                <TextField
-                  multiline
-                  fullWidth
-                  defaultValue={selectedRecord?.vocabularyDetail.memo}
-                  rows={2}
-                  label={jaTranslate('model.vocabulary.memo')}
-                  className={classes.form}
-                  {...register("memo")}
-                />
-              </div>
+            <div className={classes.form}>
+              <TextField
+                multiline
+                fullWidth
+                defaultValue={selectedRecord?.vocabularyDetail.memo}
+                rows={2}
+                label={jaTranslate('model.vocabulary.memo')}
+                className={classes.form}
+                {...register("memo")}
+              />
+            </div>
 
-              <Button
-                variant="contained"
-                color="success"
-                size="large"
-                className={classes.button}
-                type="submit">
-                {jaTranslate('actions.submit')}
-              </Button>
-            </form>
-          </Box>
-        </Modal>
-      )}
+            <Button
+              variant="contained"
+              color="success"
+              size="large"
+              className={classes.button}
+              type="submit">
+              {jaTranslate('actions.submit')}
+            </Button>
+          </form>
+        </Box>
+      </Modal>
     </>
   )
 }

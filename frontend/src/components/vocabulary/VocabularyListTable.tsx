@@ -13,11 +13,13 @@ import React, { useContext, useState } from 'react';
 import { toast } from 'react-toastify';
 import { Vocabulary } from 'type';
 import pronounceVocabularyEn from 'utilities/pronounceVocabularyEn'
+import VolumeUpIcon from '@mui/icons-material/VolumeUp';
+import Divider from '@mui/material/Divider';
 
 const useStyles = makeStyles(() =>
   createStyles({
     root: {
-      height: 500,
+      height: 550,
       marginTop: '20px'
     },
     modal: {
@@ -46,8 +48,9 @@ const useStyles = makeStyles(() =>
       p: 4,
       overflowY: 'scroll'
     },
-    span: {
-      fontWeight: 'bold'
+    bold: {
+      fontWeight: 'bold',
+      marginRight: "5px"
     },
     buttonContainer : {
       width: '300px',
@@ -73,6 +76,15 @@ const useStyles = makeStyles(() =>
     },
     marginRight: {
       marginRight: "20px"
+    },
+    onCursor: {
+      cursor: "pointer"
+    },
+    englishFont: {
+      fontStyle: "italic"
+    },
+    usageContainer: {
+      marginBottom: "10px",
     }
   })
 );
@@ -99,7 +111,24 @@ const VocabularyListTable = (): JSX.Element => {
     return <Loading />
   }
 
+  const PronounceCell = (params: any) => {
+    return (
+      <span
+        className={classes.onCursor}
+      >
+        <VolumeUpIcon />
+      </span>
+    )
+  }
+
   const columns: GridColDef[] = [
+    {
+      field: 'pronounce',
+      headerName: "発音",
+      renderCell: PronounceCell,
+      width: 50,
+      sortable: false
+    },
     {
       field: 'vocabulary_en',
       headerName: jaTranslate('model.vocabulary.vocabularyEn'),
@@ -177,17 +206,19 @@ const VocabularyListTable = (): JSX.Element => {
     const checkedId = params.row.id
     const checkedField = params.field;
 
-    if (checkedField === '__check__') return;
-
+    const nonModalOpenColumns = ['__check__', 'pronounce']
     const record = vocabularyList.find((vocabulary) => (
       vocabulary.id === checkedId
     ))
 
     if (record === undefined) return;
 
-    const vocabularyEn = record.vocabularyEn;
-    pronounceVocabularyEn(vocabularyEn);
+    if (checkedField === 'pronounce') {
+      const vocabularyEn = record.vocabularyEn;
+      pronounceVocabularyEn(vocabularyEn);
+    }
 
+    if (nonModalOpenColumns.includes(checkedField)) return;
     setSelectedRecord(record);
 
     if (checkedField === "comprehension_rate") {
@@ -200,7 +231,6 @@ const VocabularyListTable = (): JSX.Element => {
 
   return (
     <>
-      {/* todo keyのwarningを修正する */}
       <div className={classes.root}>
         <DataGrid
           initialState={{
@@ -251,7 +281,7 @@ const VocabularyListTable = (): JSX.Element => {
                     variant="contained"
                     color="info"
                     className={classes.button}
-                    onClick={() => { onComprehensionRateChangeClick(selectedRecord, "high")}}
+                    onClick={() => { onComprehensionRateChangeClick(selectedRecord, "high") }}
                   >
                     {jaTranslate('crud.updateWithSpecifiedValue', 'model.vocabulary.comprehensionRateList.high')}
                   </Button>
@@ -264,7 +294,7 @@ const VocabularyListTable = (): JSX.Element => {
                     variant="contained"
                     color="secondary"
                     className={classes.button}
-                    onClick={() => { onComprehensionRateChangeClick(selectedRecord, "middle")}}
+                    onClick={() => { onComprehensionRateChangeClick(selectedRecord, "middle") }}
                   >
                     {jaTranslate('crud.updateWithSpecifiedValue', 'model.vocabulary.comprehensionRateList.middle')}
                   </Button>
@@ -277,7 +307,7 @@ const VocabularyListTable = (): JSX.Element => {
                     variant="contained"
                     color="error"
                     className={classes.button}
-                    onClick={() => { onComprehensionRateChangeClick(selectedRecord, "low")}}
+                    onClick={() => { onComprehensionRateChangeClick(selectedRecord, "low") }}
                   >
                     {jaTranslate('crud.updateWithSpecifiedValue', 'model.vocabulary.comprehensionRateList.low')}
                   </Button>
@@ -314,7 +344,7 @@ const VocabularyListTable = (): JSX.Element => {
                       setIsComprehensionRateChangeModalOpen(true)
                     }}
                   >
-                    理解度を変更する
+                    {jaTranslate("crud.editWithObjectName", "model.vocabulary.comprehensionRate")}
                   </Button>
                 </span>
                 <span>
@@ -327,34 +357,45 @@ const VocabularyListTable = (): JSX.Element => {
                       setIsUpdateModalOpen(true)
                     }}
                   >
-                    英単語を編集する
+                    {jaTranslate("crud.editWithObjectName", "model.vocabulary.modelName")}
                   </Button>
                 </span>
               </div>
+              <Divider />
+
               {(selectedRecord.vocabularyUsages) && (
                 (selectedRecord.vocabularyUsages).map((usage, i) => {
                   return (
                     <>
-                      <h3 id="parent-modal-title">definition{i+1}</h3>
-                      <span className={classes.span}>{usage.definition}</span>
-                      <br />
+                      <div className={classes.usageContainer}>
+                        <p className={classes.bold}>{jaTranslate("model.vocabulary.definition")}{i + 1}</p>
+                        <span className={classes.bold}>
+                          <span className={classes.englishFont}>{usage.definition}</span>
+                        </span>
 
-                      {(usage.examples) && (
-                        (usage.examples.split(", ")).map((example: string, j: number) => {
-                          return (
-                            <p id="parent-modal-description">
-                              <span className={classes.span}>example{j + 1}:</span> {example}
-                            </p>
-                          )
-                        })
-                      )}
+                        {(usage.examples) && (
+                          (usage.examples.split(", ")).map((example: string, j: number) => {
+                            return (
+                              <p id="parent-modal-description">
+                                <span className={classes.bold}>
+                                  {jaTranslate("model.vocabulary.example")}{j + 1}:
+                                </span>
+                                <span className={classes.englishFont}>{example}</span>
+                              </p>
+                            )
+                          })
+                        )}
+                      </div>
+                      <Divider />
                     </>
                   )
                 })
               )}
               {(selectedRecord.vocabularyDetail.memo !== "") && (
                 <>
-                  <h3>メモ</h3>
+                  <p className={classes.bold}>
+                    {jaTranslate("model.vocabulary.memo")}
+                  </p>
                   {selectedRecord.vocabularyDetail.memo}
                 </>
               )}

@@ -1,5 +1,3 @@
-// todo paramsとmodelのtypeで別ファイルに分ける？
-
 // params
 export type SignUpParams = {
   nickname: string;

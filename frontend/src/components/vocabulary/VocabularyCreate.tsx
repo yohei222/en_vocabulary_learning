@@ -91,6 +91,13 @@ const VocabularyCreate = (): JSX.Element => {
     resolver: yupResolver(schema)
   });
 
+  const setDefaultValues = () => {
+    setValue("vocabularyEn", "")
+    setValue("meaningJa", "")
+    setValue("comprehensionRate", "low")
+    setValue("memo", "")
+  }
+
   const onSubmit: SubmitHandler<VocabularyCreateInput> = async (data: VocabularyCreateInput) => {
     const body: VocabularyCreateParams = vocabularyInputToParamsConverter(data);
 
@@ -104,6 +111,7 @@ const VocabularyCreate = (): JSX.Element => {
     if (status === 200) {
       notifyCreateSuccess();
       renewRecords();
+      setDefaultValues();
     } else {
       setIsCreateModalOpen(true);
       notifyCreateFailure();
@@ -134,6 +142,7 @@ const VocabularyCreate = (): JSX.Element => {
                   fullWidth
                   label={jaTranslate('model.vocabulary.vocabularyEn')}
                   className={classes.form}
+                  defaultValue=""
                   {...register("vocabularyEn", { required: true, minLength: 1, maxLength: 50 })}
                 />
                 {errors.vocabularyEn && (
@@ -148,6 +157,7 @@ const VocabularyCreate = (): JSX.Element => {
                   fullWidth
                   label={jaTranslate('model.vocabulary.meaningJa')}
                   className={classes.form}
+                  defaultValue=""
                   {...register("meaningJa", { required: true, minLength: 1, maxLength: 30 })}
                 />
                 {errors.meaningJa && (
@@ -163,6 +173,7 @@ const VocabularyCreate = (): JSX.Element => {
                   <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
+                    defaultValue="low"
                     value={comprehensionValueLabel}
                     label={jaTranslate('model.vocabulary.comprehensionRate')}
                     {...register("comprehensionRate")}
@@ -217,6 +228,7 @@ const VocabularyCreate = (): JSX.Element => {
                       multiline
                       fullWidth
                       rows={2}
+                      defaultValue=""
                       label={jaTranslate('model.vocabulary.memo')}
                       className={classes.form}
                       {...register("memo")}
