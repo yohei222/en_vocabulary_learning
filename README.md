@@ -4,7 +4,7 @@
 ## URL, README一覧
 ### アプリURL(フロントエンドURL)
 - https://en-vocabulary-learning.netlify.app
-- README: ([フロントエンドREADME](https://github.com/yohei222/en_vocabulary_learning/blob/master/fronted/README.md))
+- README: ([フロントエンドREADME](https://github.com/yohei222/en_vocabulary_learning/blob/master/frontend/README.md))
 
 ### APIエンドポイント(バックエンドURL)
 - https://en-vocabulary-learning-api.herokuapp.com
