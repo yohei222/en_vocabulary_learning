@@ -37,4 +37,6 @@ https://en-vocabulary-learning-api.herokuapp.com
     - 更新日時
 
 ## サンプル動画
-https://user-images.githubusercontent.com/56663358/174016767-f7c95fc8-7454-4429-813b-54c0ee56db89.mov
+https://user-images.githubusercontent.com/56663358/174020323-32790d09-352d-48a4-a44d-5afa8f510957.mov
+
+
