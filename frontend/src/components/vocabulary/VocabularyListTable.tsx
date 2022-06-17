@@ -20,7 +20,8 @@ const useStyles = makeStyles(() =>
   createStyles({
     root: {
       height: 550,
-      marginTop: '20px'
+      marginTop: '20px',
+      marginBottom: '40px'
     },
     modal: {
       position: 'absolute' as 'absolute',
@@ -250,8 +251,8 @@ const VocabularyListTable = (): JSX.Element => {
               event.defaultMuiPrevented = true;
             }
           }}
-          pageSize={10}
-          rowsPerPageOptions={[10]}
+          pageSize={20}
+          rowsPerPageOptions={[20]}
           checkboxSelection
           disableSelectionOnClick
           onSelectionModelChange={(newSelection) =>
