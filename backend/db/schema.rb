@@ -45,7 +45,7 @@ ActiveRecord::Schema.define(version: 2022_06_11_172030) do
 
   create_table "vocabulary_usages", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.bigint "vocabulary_id"
-    t.string "definition", null: false
+    t.text "definition", null: false
     t.string "examples", default: ""
     t.index ["vocabulary_id"], name: "index_vocabulary_usages_on_vocabulary_id"
   end
