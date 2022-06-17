@@ -54,8 +54,8 @@ const SignUp = (): JSX.Element => {
   const classes = useStyles();
   const navigate = useNavigate();
   const { setIsSignedIn, setCurrentUser } = useContext(AuthContext)
-  const notifySignUpSuccess = () => toast(jaTranslate('success.action', 'actions.signUp'));
-  const notifySignUpFailure = () => toast(jaTranslate('failure.action', 'actions.signUp'));
+  const notifySignUpSuccess = () => toast.success(jaTranslate('success.action', 'actions.signUp'));
+  const notifySignUpFailure = () => toast.error(jaTranslate('failure.action', 'actions.signUp'));
 
   const { register, handleSubmit, formState: { errors } } = useForm<SignUpParams>({
     resolver: yupResolver(schema)

@@ -65,7 +65,7 @@ const VocabulariesIndex = (): JSX.Element => {
   const classes = useStyles();
   const navigate = useNavigate();
   const [isLogOutModalOpen, setIsLogOutModalOpen] = useState<boolean>(false);
-  const notifyLogOutSuccess = () => toast(jaTranslate('success.action', 'actions.logOut'));
+  const notifyLogOutSuccess = () => toast.success(jaTranslate('success.action', 'actions.logOut'));
 
   return (
     <VocabularyContext.Provider value={ctx}>

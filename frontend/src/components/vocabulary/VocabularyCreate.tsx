@@ -77,8 +77,8 @@ const VocabularyCreate = (): JSX.Element => {
   const classes = useStyles();
   const [isAttachMemo, setIsAttachMemo] = useState<boolean>(false);
   const [comprehensionValueLabel, setComprehensionValueLabel] = useState<string | undefined>(undefined);
-  const notifyCreateSuccess = () => toast(jaTranslate('success.create', 'model.vocabulary.modelName'));
-  const notifyCreateFailure = () => toast(jaTranslate('failure.create', 'model.vocabulary.modelName'));
+  const notifyCreateSuccess = () => toast.success(jaTranslate('success.create', 'model.vocabulary.modelName'));
+  const notifyCreateFailure = () => toast.error(jaTranslate('failure.create', 'model.vocabulary.modelName'));
 
   const {
     setIsLoading,

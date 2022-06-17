@@ -82,8 +82,8 @@ const VocabularyUpdate = (): JSX.Element => {
     renewRecords
   } = useContext(VocabularyContext);
 
-  const notifyUpdateSuccess = () => toast(jaTranslate('success.update', 'model.vocabulary.modelName'));
-  const notifyUpdateFailure = () => toast(jaTranslate('failure.update', 'model.vocabulary.modelName'));
+  const notifyUpdateSuccess = () => toast.success(jaTranslate('success.update', 'model.vocabulary.modelName'));
+  const notifyUpdateFailure = () => toast.error(jaTranslate('failure.update', 'model.vocabulary.modelName'));
   const [comprehensionValueLabel, setComprehensionValueLabel] = useState<string | undefined>(selectedRecord?.vocabularyDetail.comprehensionRate);
 
   const { register, handleSubmit, formState: { errors } } = useForm<VocabularyCreateInput>({
