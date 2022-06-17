@@ -86,6 +86,10 @@ const useStyles = makeStyles(() =>
     marginBottom: {
       marginBottom: "10px",
     },
+    overflowWrappedText: {
+      display: "block",
+      overflowWrap: "break-word"
+    }
   })
 );
 
@@ -379,13 +383,13 @@ const VocabularyListTable = (): JSX.Element => {
 
               {(selectedRecord.vocabularyDetail.memo !== "") && (
                 <>
-                  <div className={classes.marginBottom}>
-                    <p className={classes.bold}>
-                      {jaTranslate("model.vocabulary.memo")}
-                    </p>
-                    <p id="parent-modal-description">
+                  <p className={classes.bold}>
+                    {jaTranslate("model.vocabulary.memo")}
+                  </p>
+                  <div className={classes.overflowWrappedText}>
+                    <span className={classes.bold}>
                       <p className={classes.englishFont}>{selectedRecord.vocabularyDetail.memo}</p>
-                    </p>
+                    </span>
                   </div>
                 </>
               )}
