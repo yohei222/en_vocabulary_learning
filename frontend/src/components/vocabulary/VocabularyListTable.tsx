@@ -43,7 +43,7 @@ const useStyles = makeStyles(() =>
       height: '300px',
       padding: '20px 40px',
       transform: 'translate(-50%, -50%)',
-      width: '20%',
+      width: '250px',
       backgroundColor: 'white',
       boxShadow: '24',
       p: 4,
@@ -98,8 +98,8 @@ const VocabularyListTable = (): JSX.Element => {
   const classes = useStyles();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isComprehensionRateChangeModalOpen, setIsComprehensionRateChangeModalOpen] = useState<boolean>(false);
-  const notifyUpdateSuccess = () => toast(jaTranslate('success.update', 'model.vocabulary.modelName'));
-  const notifyUpdateFailure = () => toast(jaTranslate('failure.update', 'model.vocabulary.modelName'));
+  const notifyUpdateSuccess = () => toast.success(jaTranslate('success.update', 'model.vocabulary.modelName'));
+  const notifyUpdateFailure = () => toast.error(jaTranslate('failure.update', 'model.vocabulary.modelName'));
 
   const {
     isLoading,

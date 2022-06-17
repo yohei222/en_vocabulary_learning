@@ -50,8 +50,8 @@ const VocabularyBulkDelete = ():JSX.Element => {
   } = useContext(VocabularyContext);
 
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState<boolean>(false);
-  const notifyBulkDeleteSuccess = () => toast(jaTranslate('success.bulkDelete', 'model.vocabulary.modelName'));
-  const notifyBulkDeleteFailure = () => toast(jaTranslate('failure.bulkDelete', 'model.vocabulary.modelName'));
+  const notifyBulkDeleteSuccess = () => toast.success(jaTranslate('success.bulkDelete', 'model.vocabulary.modelName'));
+  const notifyBulkDeleteFailure = () => toast.error(jaTranslate('failure.bulkDelete', 'model.vocabulary.modelName'));
 
   const checkedRecordIdsCount = useMemo(() =>
     checkedRecordIds.length
