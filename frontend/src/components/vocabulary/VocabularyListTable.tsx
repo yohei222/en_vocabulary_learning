@@ -9,7 +9,7 @@ import { patchRequest } from 'lib/api/client';
 import { jaTranslate } from "locales/i18n";
 import moment from "moment";
 import API_PATH from 'path/API_PATH';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useReducer } from 'react';
 import { toast } from 'react-toastify';
 import { Vocabulary } from 'type';
 import pronounceVocabularyEn from 'utilities/pronounceVocabularyEn'
@@ -94,12 +94,35 @@ const useStyles = makeStyles(() =>
   })
 );
 
+const ModalTypes = {
+  none: "none",
+  comprehensionRateChangeModalOpen: "comprehensionRateChangeModalOpen",
+  vocabularyDetailModalOpen: "vocabularyDetailModalOpen"
+}
+
+type StateType = {
+  currentModalType: string
+};
+
+const modalChangeReducer = (_modalState: StateType, action: { type: string }) => {
+  switch(action.type) {
+    case ModalTypes.none:
+      return { currentModalType: ModalTypes.none }
+    case ModalTypes.comprehensionRateChangeModalOpen:
+      return { currentModalType: ModalTypes.comprehensionRateChangeModalOpen }
+    case ModalTypes.vocabularyDetailModalOpen:
+      return { currentModalType: ModalTypes.vocabularyDetailModalOpen }
+    default:
+      throw new Error('Invalid Action')
+  }
+}
+
 const VocabularyListTable = (): JSX.Element => {
   const classes = useStyles();
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [isComprehensionRateChangeModalOpen, setIsComprehensionRateChangeModalOpen] = useState<boolean>(false);
   const notifyUpdateSuccess = () => toast.success(jaTranslate('success.update', 'model.vocabulary.modelName'));
   const notifyUpdateFailure = () => toast.error(jaTranslate('failure.update', 'model.vocabulary.modelName'));
+
+  const [modalState, dispatch] = useReducer(modalChangeReducer, { currentModalType: ModalTypes.none } )
 
   const {
     isLoading,
@@ -116,7 +139,7 @@ const VocabularyListTable = (): JSX.Element => {
     return <Loading />
   }
 
-  const PronounceCell = (params: any) => {
+  const PronounceCell = () => {
     return (
       <span
         className={classes.onCursor}
@@ -189,7 +212,7 @@ const VocabularyListTable = (): JSX.Element => {
     newRecord.vocabularyDetail.comprehensionRate = clickedRate;
 
     setIsLoading(true);
-    setIsComprehensionRateChangeModalOpen(false);
+    dispatch({type: ModalTypes.none})
 
     const { status } = await patchRequest(
       `${API_PATH.VOCABULARIES.UPDATE}/${record.id}`, newRecord
@@ -200,7 +223,7 @@ const VocabularyListTable = (): JSX.Element => {
       notifyUpdateSuccess();
       renewRecords();
     } else {
-      setIsComprehensionRateChangeModalOpen(true);
+      dispatch({ type: ModalTypes.comprehensionRateChangeModalOpen })
       notifyUpdateFailure();
     }
 
@@ -227,11 +250,11 @@ const VocabularyListTable = (): JSX.Element => {
     setSelectedRecord(record);
 
     if (checkedField === "comprehension_rate") {
-      setIsComprehensionRateChangeModalOpen(true);
+      dispatch({ type: ModalTypes.comprehensionRateChangeModalOpen })
       return;
     }
 
-    setIsModalOpen(true);
+    dispatch({type: ModalTypes.vocabularyDetailModalOpen})
   };
 
   return (
@@ -262,8 +285,8 @@ const VocabularyListTable = (): JSX.Element => {
       </div>
 
       <Modal
-        open={isComprehensionRateChangeModalOpen}
-        onClose={() => setIsComprehensionRateChangeModalOpen(false)}
+        open={modalState.currentModalType === ModalTypes.comprehensionRateChangeModalOpen}
+        onClose={() => dispatch({ type: ModalTypes.none }) }
       >
         <Box className={classes.smallModal}>
           {(selectedRecord) && (
@@ -324,8 +347,8 @@ const VocabularyListTable = (): JSX.Element => {
       </Modal>
 
       <Modal
-        open={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        open={modalState.currentModalType === ModalTypes.vocabularyDetailModalOpen}
+        onClose={() => dispatch({type: ModalTypes.none})}
       >
         <Box className={ classes.modal }>
           {(selectedRecord) && (
@@ -347,8 +370,7 @@ const VocabularyListTable = (): JSX.Element => {
                     color="info"
                     className={classes.modalButton}
                     onClick={() => {
-                      setIsModalOpen(false)
-                      setIsComprehensionRateChangeModalOpen(true)
+                      dispatch({ type: ModalTypes.comprehensionRateChangeModalOpen })
                     }}
                   >
                     {jaTranslate("crud.editWithObjectName", "model.vocabulary.comprehensionRate")}
@@ -360,7 +382,7 @@ const VocabularyListTable = (): JSX.Element => {
                     color="success"
                     className={classes.modalButton}
                     onClick={() => {
-                      setIsModalOpen(false)
+                      dispatch({ type: ModalTypes.none })
                       setIsUpdateModalOpen(true)
                     }}
                   >
