@@ -32,7 +32,7 @@
 
 ## 使用しているライブラリ例
 ### react hooks
-- useContext, useState, useCallback, useMemo, useEffectなどを使用しています。
+- useContext, useState, useCallback, useMemo, useEffect, useReducerを使用しています。
 
 ### toast
 - ログイン時やレコードの変更時にフラッシュメッセージを表示するために使用しています。
