@@ -41,4 +41,7 @@
 ## サンプル動画
 https://user-images.githubusercontent.com/56663358/174020323-32790d09-352d-48a4-a44d-5afa8f510957.mov
 
+### Herokuについて(メモ)
+再度APIを動作させるためには、Herokuのlow-cost-plansに課金する必要があります。
+https://blog.heroku.com/new-low-cost-plans
 
